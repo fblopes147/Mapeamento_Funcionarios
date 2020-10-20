@@ -6,6 +6,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import BackIcon from '@material-ui/icons/ArrowBack';
 
 import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -59,6 +60,11 @@ const useStyles = makeStyles((theme) => ({
         width: '25ch',
     },
 }));
+
+const SalvarDados = () => {
+    // Acessar API de salvar dados no Banco
+    alert("Os dados foram salvos com sucesso!");
+}
 
 export default function InserirMapeamento(){
     const [state, setState] = React.useState({
