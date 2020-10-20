@@ -8,7 +8,6 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import { render } from 'react-dom';
 
 const listaSexo = [
     {value: '-', label: '-'},
@@ -55,6 +54,12 @@ const listaEstado = [
     {value: 'Tocantins ', label: 'TO'}
 ]
 
+const listaTipoPresenca = [
+    {value: '-', label: '-'},
+    {value: 'Presencial', label: 'Presencial'},
+    {value: 'Remoto', label: 'Remoto'}
+]
+
 const useStyles = makeStyles((theme) => ({
     button: {
       margin: theme.spacing(1),
@@ -88,6 +93,7 @@ export default function InserirNovoFuncionario() {
     const [sexo, setSexo] = React.useState('-');
     const [estadoCivil, setEstadoCivil] = React.useState('-');
     const [estado, setEstado] = React.useState('-');
+    const [tipoPresenca, setTipoPresenca] = React.useState('-');
     
     const handleChangeSexo = event => {
         document.querySelector("[id='txtSexo']").value = event.target.value;
@@ -102,6 +108,11 @@ export default function InserirNovoFuncionario() {
     const handleChangeEstado = event => {
         document.querySelector("[id='txtEstado']").value = event.target.value;
         setEstado(event.target.value);
+    };
+
+    const handleChangeTipoPresenca = event => {
+        document.querySelector("[id='txtTipoPresenca']").value = event.target.value;
+        setTipoPresenca(event.target.value);
     };
 
     return(
@@ -133,18 +144,7 @@ export default function InserirNovoFuncionario() {
             <TextField
                 id="txtNomeFuncionario"
                 label="Nome do Funcionário"
-                style={{ margin: 8, width:"300px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtProntuario"
-                label="Prontuário"
-                style={{ margin: 8, width:"185px", marginRight:"10px"}}
+                style={{ margin: 8, width:"350px", marginRight:"10px"}}
                 margin="normal"
                 InputLabelProps={{
                     shrink: true,
@@ -197,11 +197,49 @@ export default function InserirNovoFuncionario() {
                     </MenuItem>
                 ))}
             </TextField>
-            <p />
+            <TextField
+                id="txtArea"
+                label="Área"
+                style={{ margin: 8, width:"50px", marginRight:"10px"}}
+                margin="normal"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                variant="outlined"
+                size="small"
+            />
             <TextField
                 id="txtTelFuncionario"
                 label="Telefone"
-                style={{ margin: 8, width:"160px", marginRight:"10px"}}
+                style={{ margin: 8, width:"120px", marginRight:"10px"}}
+                margin="normal"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                variant="outlined"
+                size="small"
+            />
+            <TextField
+                id="txtTipoPresenca"
+                select
+                label="Tipo Presença"
+                style={{ margin: 8, width:"150px", marginRight:"10px"}}
+                size="small"
+                value={tipoPresenca}
+                onChange={handleChangeTipoPresenca}
+                variant="outlined"
+            >
+                {listaTipoPresenca.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                    </MenuItem>
+                ))}
+            </TextField>
+            <p />
+            <TextField
+                id="txtGestor"
+                label="Gestor"
+                style={{ margin: 8, width:"100px", marginRight:"10px"}}
                 margin="normal"
                 InputLabelProps={{
                     shrink: true,
@@ -212,7 +250,7 @@ export default function InserirNovoFuncionario() {
             <TextField
                 id="txtCargo"
                 label="Cargo"
-                style={{ margin: 8, width:"130px", marginRight:"10px"}}
+                style={{ margin: 8, width:"200px", marginRight:"10px"}}
                 margin="normal"
                 InputLabelProps={{
                     shrink: true,
@@ -221,9 +259,9 @@ export default function InserirNovoFuncionario() {
                 size="small"
             />
             <TextField
-                id="txtArea"
-                label="Área"
-                style={{ margin: 8, width:"90px", marginRight:"10px"}}
+                id="txtEmpresa"
+                label="Empresa"
+                style={{ margin: 8, width:"200px", marginRight:"10px"}}
                 margin="normal"
                 InputLabelProps={{
                     shrink: true,
@@ -232,9 +270,9 @@ export default function InserirNovoFuncionario() {
                 size="small"
             />
             <TextField
-                id="txtGestor"
-                label="Gestor"
-                style={{ margin: 8, width:"300px", marginRight:"10px"}}
+                id="txtLoja"
+                label="Loja"
+                style={{ margin: 8, width:"200px", marginRight:"10px"}}
                 margin="normal"
                 InputLabelProps={{
                     shrink: true,
@@ -243,9 +281,20 @@ export default function InserirNovoFuncionario() {
                 size="small"
             />
             <TextField
-                id="txtTelGestor"
-                label="Telefone Gestor"
-                style={{ margin: 8, width:"160px", marginRight:"10px"}}
+                id="txtTurno"
+                label="Turno"
+                style={{ margin: 8, width:"220px", marginRight:"10px"}}
+                margin="normal"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                variant="outlined"
+                size="small"
+            />
+            <TextField
+                id="txtGrupo"
+                label="Grupo"
+                style={{ margin: 8, width:"100px", marginRight:"10px"}}
                 margin="normal"
                 InputLabelProps={{
                     shrink: true,
@@ -257,7 +306,7 @@ export default function InserirNovoFuncionario() {
             <TextField
                 id="txtCEP"
                 label="CEP"
-                style={{ margin: 8, width:"75px", marginRight:"10px"}}
+                style={{ margin: 8, width:"120px", marginRight:"10px"}}
                 margin="normal"
                 InputLabelProps={{
                     shrink: true,
@@ -268,7 +317,7 @@ export default function InserirNovoFuncionario() {
             <TextField
                 id="txtEndereco"
                 label="Endereço"
-                style={{ margin: 8, width:"300px", marginRight:"10px"}}
+                style={{ margin: 8, width:"350px", marginRight:"10px"}}
                 margin="normal"
                 InputLabelProps={{
                     shrink: true,
@@ -314,6 +363,18 @@ export default function InserirNovoFuncionario() {
                     </MenuItem>
                 ))}
             </TextField>
+            <p />
+            <TextField
+                id="txtProntuario"
+                label="Prontuário"
+                style={{ margin: 8, width:"350px", marginRight:"10px"}}
+                margin="normal"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                variant="outlined"
+                size="small"
+            />
                 {/* <table>
                     <tr style={{height:"60px"}}>
                         <td width="150"><label>Nome do Funcionário</label></td>
