@@ -59,7 +59,7 @@ export default class ExibirConsulta extends React.Component{
                 />
                 <Button
                     variant="contained"
-                    color="primary"
+                    color="black"
                     size="large"
                     startIcon={<SearchIcon />}
                     onClick={PesquisarFuncionario}

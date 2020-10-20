@@ -3,5 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/MapeamentoFuncionarios/principal": "pages/MapeamentoFuncionarios/principal.js",
+  "/MapeamentoFuncionarios/dadosmedidas": "pages/MapeamentoFuncionarios/dadosmedidas.js",
   "/MapeamentoFuncionarios/dadosfuncionarios": "pages/MapeamentoFuncionarios/dadosfuncionarios.js"
 }

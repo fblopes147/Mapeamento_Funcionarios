@@ -1,7 +1,8 @@
 import React from "react"
 
 import Button from '@material-ui/core/Button';
-import NovoFuncionarioIcon from '@material-ui/icons/AddBox';
+import NovoAssociadoIcon from '@material-ui/icons/Create';
+import NovasMedidasIcon from '@material-ui/icons/LocalHospital';
 
 export default class ExibirInsercao extends React.Component{
     render(){
@@ -11,13 +12,23 @@ export default class ExibirInsercao extends React.Component{
                 <p></p>
                 <Button
                     variant="contained"
-                    color="primary"
+                    color="black"
                     size="large"
-                    startIcon={<NovoFuncionarioIcon />}
+                    startIcon={<NovoAssociadoIcon />}
                     href="dadosfuncionarios"
                     style={{marginRight:"20px"}}
                 >
-                    Inserir Novo Funcionário
+                    Inserir Novo Associado
+                </Button>
+                <Button
+                    variant="contained"
+                    color="black"
+                    size="large"
+                    startIcon={<NovasMedidasIcon />}
+                    href="dadosmedidas"
+                    style={{marginRight:"20px"}}
+                >
+                    Inserir Novas Medidas
                 </Button>
             </div>
         )

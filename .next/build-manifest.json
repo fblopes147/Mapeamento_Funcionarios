@@ -19,6 +19,11 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/MapeamentoFuncionarios/dadosfuncionarios.js"
     ],
+    "/MapeamentoFuncionarios/dadosmedidas": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/MapeamentoFuncionarios/dadosmedidas.js"
+    ],
     "/MapeamentoFuncionarios/principal": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",

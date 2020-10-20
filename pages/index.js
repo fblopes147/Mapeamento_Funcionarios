@@ -9,7 +9,7 @@ export default function Index() {
     <div>
       <li className={styles.mapeamento}>
         <Link href="MapeamentoFuncionarios/principal">
-          <a>MAPEAMENTO DE FUNCIONÁRIOS</a>
+          <a>MAPEAMENTO DE ASSOCIADOS</a>
         </Link>
       </li>
     </div>
