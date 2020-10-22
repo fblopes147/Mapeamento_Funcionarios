@@ -49,9 +49,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// var nomeFuncionario = "";
-var itemSexo = "";
-
 const SalvarDados = () => {
     // Acessar API de salvar dados no Banco
     console.log("Nome do Associado: " + document.querySelector("[id='txtNomeAssociado']").value);
