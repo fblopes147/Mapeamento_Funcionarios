@@ -14,15 +14,15 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
-    "/": [
+    "/MapeamentoFuncionarios/dadosfuncionarios": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/index.js"
+      "static/chunks/pages/MapeamentoFuncionarios/dadosfuncionarios.js"
     ],
-    "/MapeamentoFuncionarios/dadosmapeamento": [
+    "/MapeamentoFuncionarios/principal": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/MapeamentoFuncionarios/dadosmapeamento.js"
+      "static/chunks/pages/MapeamentoFuncionarios/principal.js"
     ],
     "/_app": [
       "static/chunks/main.js",

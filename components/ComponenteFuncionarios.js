@@ -8,6 +8,8 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import FormGroup from '@material-ui/core/FormGroup';
+
 const listaSexo = [
     {value: '-', label: '-'},
     {value: 'Feminino', label: 'F'},
@@ -20,37 +22,6 @@ const listaEstadoCivil = [
     {value: 'Casado', label: 'Casado'},
     {value: 'Viúvo', label: 'Viúvo'},
     {value: 'Divorciado', label: 'Divorciado'}
-]
-
-const listaEstado = [
-    {value: '-', label: '-'},
-    {value: 'Acre', label: 'AC'},
-    {value: 'Alagoas ', label: 'AL'},
-    {value: 'Amapá ', label: 'AP'},
-    {value: 'Amazonas ', label: 'AM'},
-    {value: 'Bahia ', label: 'BA'},
-    {value: 'Ceará ', label: 'CE'},
-    {value: 'Distrito Federal ', label: 'DF'},
-    {value: 'Espírito Santo ', label: 'ES'},
-    {value: 'Goiás ', label: 'GO'},
-    {value: 'Maranhão ', label: 'MA'},
-    {value: 'Mato Grosso ', label: 'MT'},
-    {value: 'Mato Grosso do Sul ', label: 'MS'},
-    {value: 'Minas Gerais ', label: 'MG'},
-    {value: 'Pará ', label: 'PA'},
-    {value: 'Paraíba ', label: 'PB'},
-    {value: 'Paraná ', label: 'PR'},
-    {value: 'Pernambuco ', label: 'PE'},
-    {value: 'Piauí ', label: 'PI'},
-    {value: 'Rio de Janeiro ', label: 'RJ'},
-    {value: 'Rio Grande do Norte ', label: 'RN'},
-    {value: 'Rio Grande do Sul ', label: 'RS'},
-    {value: 'Rondônia ', label: 'RO'},
-    {value: 'Roraima ', label: 'RR'},
-    {value: 'Santa Catarina ', label: 'SC'},
-    {value: 'São Paulo ', label: 'SP'},
-    {value: 'Sergipe ', label: 'SE'},
-    {value: 'Tocantins ', label: 'TO'}
 ]
 
 const listaTipoPresenca = [
@@ -82,16 +53,31 @@ const useStyles = makeStyles((theme) => ({
 var itemSexo = "";
 
 const SalvarDados = () => {
-    itemSexo = document.querySelector("[id='txtSexo']").value;
-    alert(itemSexo);
     // Acessar API de salvar dados no Banco
+    console.log("Nome do Associado: " + document.querySelector("[id='txtNomeAssociado']").value);
+    console.log("Data de Nascimento: " + document.querySelector("[id='txtDtNascimento']").value);
+    console.log("Sexo: " + document.querySelector("[id='txtSexo']").value);
+    console.log("Estado Civil: " + document.querySelector("[id='txtEstadoCivil']").value);
+    console.log("Área: " + document.querySelector("[id='txtArea']").value);
+    console.log("Telefone: " + document.querySelector("[id='txtTelFuncionario']").value);
+    console.log("Tipo Presença: " + document.querySelector("[id='txtTipoPresenca']").value);
+    console.log("Gestor: " + document.querySelector("[id='txtGestor']").value);
+    console.log("Cargo: " + document.querySelector("[id='txtCargo']").value);
+    console.log("Empresa: " + document.querySelector("[id='txtEmpresa']").value);
+    console.log("Loja: " + document.querySelector("[id='txtLoja']").value);
+    console.log("Turno: " + document.querySelector("[id='txtTurno']").value);
+    console.log("Grupo: " + document.querySelector("[id='txtGrupo']").value);
+    console.log("CEP: " + document.querySelector("[id='txtCEP']").value);
+    console.log("Endereço: " + document.querySelector("[id='txtEndereco']").value);
+    console.log("Bairro: " + document.querySelector("[id='txtBairro']").value);
+    console.log("Cidade: " + document.querySelector("[id='txtCidade']").value);
+    console.log("Prontuário: " + document.querySelector("[id='txtProntuario']").value);
     alert("Os dados foram salvos com sucesso!");
 }
 
 export default function InserirNovoFuncionario() {
     const [sexo, setSexo] = React.useState('-');
     const [estadoCivil, setEstadoCivil] = React.useState('-');
-    const [estado, setEstado] = React.useState('-');
     const [tipoPresenca, setTipoPresenca] = React.useState('-');
     
     const handleChangeSexo = event => {
@@ -104,11 +90,6 @@ export default function InserirNovoFuncionario() {
         setEstadoCivil(event.target.value);
     };
 
-    const handleChangeEstado = event => {
-        document.querySelector("[id='txtEstado']").value = event.target.value;
-        setEstado(event.target.value);
-    };
-
     const handleChangeTipoPresenca = event => {
         document.querySelector("[id='txtTipoPresenca']").value = event.target.value;
         setTipoPresenca(event.target.value);
@@ -116,334 +97,252 @@ export default function InserirNovoFuncionario() {
 
     return(
         <div>
-            <Button
-                variant="contained"
-                color="black"
-                size="large"
-                startIcon={<SaveIcon />}
-                onClick={SalvarDados}
-                style={{marginRight:"20px"}}
-            >
-                Salvar
-            </Button>
-            <Button
-                variant="contained"
-                color="black"
-                size="large"
-                startIcon={<BackIcon />}
-                href="principal"
-            >
-                Voltar
-            </Button>
-            <br />
-            <br />
-            <br />
-            <TextField
-                id="txtNomeAssociado"
-                label="Nome do Associado"
-                style={{ margin: 8, width:"350px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtDtNascimento"
-                label="Data de Nascimento"
-                style={{ margin: 8, width:"180px", marginRight:"10px"}}
-                type="date"
-                format="dd/MM/yyyy"
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtSexo"
-                select
-                label="Sexo"
-                style={{ margin: 8, width:"100px", marginRight:"10px"}}
-                size="small"
-                value={sexo}
-                onChange={handleChangeSexo}
-                variant="outlined"
-            >
-                {listaSexo.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                ))}
-            </TextField>
-            <TextField
-                id="txtEstadoCivil"
-                select
-                label="Estado Civil"
-                style={{ margin: 8, width:"150px", marginRight:"10px"}}
-                size="small"
-                value={estadoCivil}
-                onChange={handleChangeEstadoCivil}
-                variant="outlined"
-            >
-                {listaEstadoCivil.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                ))}
-            </TextField>
-            <TextField
-                id="txtArea"
-                label="Área"
-                style={{ margin: 8, width:"50px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtTelFuncionario"
-                label="Telefone"
-                style={{ margin: 8, width:"120px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtTipoPresenca"
-                select
-                label="Tipo Presença"
-                style={{ margin: 8, width:"150px", marginRight:"10px"}}
-                size="small"
-                value={tipoPresenca}
-                onChange={handleChangeTipoPresenca}
-                variant="outlined"
-            >
-                {listaTipoPresenca.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                ))}
-            </TextField>
-            <p />
-            <TextField
-                id="txtGestor"
-                label="Gestor"
-                style={{ margin: 8, width:"100px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtCargo"
-                label="Cargo"
-                style={{ margin: 8, width:"200px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtEmpresa"
-                label="Empresa"
-                style={{ margin: 8, width:"200px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtLoja"
-                label="Loja"
-                style={{ margin: 8, width:"200px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtTurno"
-                label="Turno"
-                style={{ margin: 8, width:"220px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtGrupo"
-                label="Grupo"
-                style={{ margin: 8, width:"100px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <p />
-            <TextField
-                id="txtCEP"
-                label="CEP"
-                style={{ margin: 8, width:"120px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtEndereco"
-                label="Endereço"
-                style={{ margin: 8, width:"350px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtBairro"
-                label="Bairro"
-                style={{ margin: 8, width:"200px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtCidade"
-                label="Cidade"
-                style={{ margin: 8, width:"200px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-            <TextField
-                id="txtEstado"
-                select
-                label="Estado"
-                style={{ margin: 8, width:"80px", marginRight:"10px"}}
-                size="small"
-                value={estado}
-                onChange={handleChangeEstado}
-                variant="outlined"
-            >
-                {listaEstado.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                ))}
-            </TextField>
-            <p />
-            <TextField
-                id="txtProntuario"
-                label="Prontuário"
-                style={{ margin: 8, width:"350px", marginRight:"10px"}}
-                margin="normal"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-                size="small"
-            />
-                {/* <table>
-                    <tr style={{height:"60px"}}>
-                        <td width="150"><label>Nome do Funcionário</label></td>
-                        <td width="315">
-                            <input type="text" name="txtNomeFuncionario" style={{width:"300px", height:"20px"}} />
-                        </td>
-                        <td width="75"><label>Prontuário</label></td>
-                        <td width="200">
-                            <input type="text" name="txtProntuario" style={{width:"185px", height:"20px"}} />
-                        </td>
-                        <td width="140"><label>Data de Nascimento</label></td>
-                        <td width="140">
-                            <input type="date" name="txtDtNascimento" style={{width:"125px", height:"20px"}} />
-                        </td>
-                        <td width="40"><label>Sexo</label></td>
-                        <td width="110">
-                            <Select options={listaSexo}/>
-                        </td>
-                        <td width="90"><label>Estado Civil</label></td>
-                        <td width="150">
-                            <Select options={listaEstadoCivil}/>
-                        </td>
-                    </tr>
-                </table>
-                <table>
-                    <tr style={{height:"60px"}}>
-                        <td width="40"><label>CEP</label></td>
-                        <td width="90">
-                            <input type="text" name="txtCEP" style={{width:"75px", height:"20px"}} />
-                        </td>
-                        <td width="70"><label>Endereço</label></td>
-                        <td width="315">
-                            <input type="text" name="txtEndereco" style={{width:"300px", height:"20px"}} />
-                        </td>
-                        <td width="55"><label>Bairro</label></td>
-                        <td width="215">
-                            <input type="text" name="txtBairro" style={{width:"200px", height:"20px"}} />
-                        </td>
-                        <td width="55"><label>Cidade</label></td>
-                        <td width="215">
-                            <input type="text" name="txtCidade" style={{width:"200px", height:"20px"}} />
-                        </td>
-                        <td width="55"><label>Estado</label></td>
-                        <td width="75">
-                        <Select options={listaEstado}/>
-                        </td>
-                    </tr>
-                </table>
-                <table>
-                    <tr style={{height:"60px"}}>
-                        <td width="65"><label>Telefone</label></td>
-                        <td width="120">
-                            <input type="text" name="txtTelFuncionario" style={{width:"105px", height:"20px"}} />
-                        </td>
-                        <td width="50"><label>Cargo</label></td>
-                        <td width="165">
-                            <input type="text" name="txtCargo" style={{width:"150px", height:"20px"}} />
-                        </td>
-                        <td width="40"><label>Área</label></td>
-                        <td width="115">
-                            <input type="text" name="txtArea" style={{width:"100px", height:"20px"}} />
-                        </td>
-                        <td width="50"><label>Gestor</label></td>
-                        <td width="165">
-                            <input type="text" name="txtGestor" style={{width:"150px", height:"20px"}} />
-                        </td>
-                        <td width="110"><label>Telefone Gestor</label></td>
-                        <td width="120">
-                            <input type="text" name="txtTelGestor" style={{width:"105px", height:"20px"}} />
-                        </td>
-                    </tr>
-                </table> */}
-            </div>
-        )
+            <FormGroup row style={{marginBottom:"30px",marginLeft:"20px",marginRight:"10px"}}>
+                <Button
+                    variant="contained"
+                    color="black"
+                    size="large"
+                    startIcon={<SaveIcon />}
+                    onClick={SalvarDados}
+                    style={{marginRight:"20px"}}
+                >
+                    Salvar
+                </Button>
+                <Button
+                    variant="contained"
+                    color="black"
+                    size="large"
+                    startIcon={<BackIcon />}
+                    href="principal"
+                >
+                    Voltar
+                </Button>
+            </FormGroup>
+            <FormGroup row style={{marginBottom:"20px",marginLeft:"10px",marginRight:"10px"}}>
+                <TextField
+                    id="txtNomeAssociado"
+                    label="Nome do Associado"
+                    style={{ margin: 8, width:"380px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtDtNascimento"
+                    label="Data de Nascimento"
+                    style={{ margin: 8, width:"180px", marginRight:"10px"}}
+                    type="date"
+                    format="dd/MM/yyyy"
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtSexo"
+                    select
+                    label="Sexo"
+                    style={{ margin: 8, width:"100px", marginRight:"10px"}}
+                    size="small"
+                    value={sexo}
+                    onChange={handleChangeSexo}
+                    variant="outlined"
+                >
+                    {listaSexo.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    id="txtEstadoCivil"
+                    select
+                    label="Estado Civil"
+                    style={{ margin: 8, width:"150px", marginRight:"10px"}}
+                    size="small"
+                    value={estadoCivil}
+                    onChange={handleChangeEstadoCivil}
+                    variant="outlined"
+                >
+                    {listaEstadoCivil.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    id="txtArea"
+                    label="Área"
+                    style={{ margin: 8, width:"50px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtTelFuncionario"
+                    label="Telefone"
+                    style={{ margin: 8, width:"150px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtTipoPresenca"
+                    select
+                    label="Tipo Presença"
+                    style={{ margin: 8, width:"150px", marginRight:"10px"}}
+                    size="small"
+                    value={tipoPresenca}
+                    onChange={handleChangeTipoPresenca}
+                    variant="outlined"
+                >
+                    {listaTipoPresenca.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+            </FormGroup>
+            <FormGroup row style={{marginBottom:"20px",marginLeft:"10px",marginRight:"10px"}}>
+                <TextField
+                    id="txtGestor"
+                    label="Gestor"
+                    style={{ margin: 8, width:"100px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtCargo"
+                    label="Cargo"
+                    style={{ margin: 8, width:"200px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtEmpresa"
+                    label="Empresa"
+                    style={{ margin: 8, width:"200px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtLoja"
+                    label="Loja"
+                    style={{ margin: 8, width:"200px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtTurno"
+                    label="Turno"
+                    style={{ margin: 8, width:"220px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtGrupo"
+                    label="Grupo"
+                    style={{ margin: 8, width:"100px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+            </FormGroup>
+            <FormGroup row style={{marginBottom:"20px",marginLeft:"10px",marginRight:"10px"}}>
+                <TextField
+                    id="txtCEP"
+                    label="CEP"
+                    style={{ margin: 8, width:"130px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtEndereco"
+                    label="Endereço"
+                    style={{ margin: 8, width:"400px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtBairro"
+                    label="Bairro"
+                    style={{ margin: 8, width:"250px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="txtCidade"
+                    label="Cidade"
+                    style={{ margin: 8, width:"250px", marginRight:"10px"}}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+            </FormGroup>
+            <FormGroup row style={{marginBottom:"20px",marginLeft:"20px",marginRight:"10px"}}>
+                <TextField
+                    id="txtProntuario"
+                    label="Prontuário"
+                    fullWidth
+                    multiline
+                    rows={5}
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    size="small"
+                />
+            </FormGroup>
+        </div>
+    )
 }
