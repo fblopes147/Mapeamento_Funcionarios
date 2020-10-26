@@ -13,6 +13,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+import axios from 'axios';
+
 const PesquisarFuncionario = () => {
     if(document.querySelector("[name='txtNomeFuncionario']").value == ""){
         alert("Nome deve ser preenchido");
@@ -61,39 +63,57 @@ const rows = [
     createData(5,'Carlos','13','996335449'),
 ]
 
-export default function PesquisarDados(){
-    const classes = useStyles();
+//const classes = useStyles();
 
-    return(
-        <TableContainer component={Paper} style={{marginLeft:"5px",marginRight:"10px"}}>
-            <Table className={classes.table}>
-                <TableHead>
-                    <TableRow style={{backgroundColor:'blue'}}>
-                        <TableCell width="75" style={{color:'white'}} align="center">Id</TableCell>
-                        <TableCell width="735" style={{color:'white'}} align="center">Nome do Associado</TableCell>
-                        <TableCell width="40" style={{color:'white'}} align="center">Área</TableCell>
-                        <TableCell width="150" style={{color:'white'}} align="center">Telefone</TableCell>
-                        <TableCell width="75" style={{color:'white'}} align="center">Editar Associado</TableCell>
-                        <TableCell width="75" style={{color:'white'}} align="center">Editar Medidas</TableCell>
-                        <TableCell width="75" style={{color:'white'}} align="center">Editar Mapeamento</TableCell>
-                        <TableCell width="75" style={{color:'white'}} align="center">Excluir Associado</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.id}>
-                            <TableCell width="75" component="th" scope="row">{row.id}</TableCell>
-                            <TableCell width="735">{row.nomeAssociado}</TableCell>
-                            <TableCell width="40" align="center">{row.area}</TableCell>
-                            <TableCell width="150">{row.telefone}</TableCell>
-                            <TableCell width="75" align="center"><EditIcon /></TableCell>
-                            <TableCell width="75" align="center"><EditIcon /></TableCell>
-                            <TableCell width="75" align="center"><EditIcon /></TableCell>
-                            <TableCell width="75" align="center"><DeleteIcon /></TableCell>
+export default class PesquisarDados extends React.Component{
+    state = {
+        lista: []
+    }
+    
+    componentDidMount(){
+        axios.get('http://localhost:8080/associates/')
+            .then(res => {
+                const lista = res.data;
+                //console.log(lista);
+                this.setState({lista});
+            })
+    }
+    
+    render(){
+        //const classes = useStyles();
+        
+        return(
+            //component={Paper} 
+            <TableContainer component={Paper} style={{marginLeft:"5px",marginRight:"10px"}}>
+                <Table>
+                    <TableHead>
+                        <TableRow style={{backgroundColor:'black'}}>
+                            <TableCell width="75" style={{color:'white', fontWeight:"bold"}} align="center">Id</TableCell>
+                            <TableCell width="735" style={{color:'white', fontWeight:"bold"}} align="center">Nome do Associado</TableCell>
+                            <TableCell width="40" style={{color:'white', fontWeight:"bold"}} align="center">Área</TableCell>
+                            <TableCell width="150" style={{color:'white', fontWeight:"bold"}} align="center">Telefone</TableCell>
+                            <TableCell width="75" style={{color:'white', fontWeight:"bold"}} align="center">Editar Associado</TableCell>
+                            <TableCell width="75" style={{color:'white', fontWeight:"bold"}} align="center">Editar Medidas</TableCell>
+                            <TableCell width="75" style={{color:'white', fontWeight:"bold"}} align="center">Editar Mapeamento</TableCell>
+                            <TableCell width="75" style={{color:'white', fontWeight:"bold"}} align="center">Excluir Associado</TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    )
+                    </TableHead>
+                    <TableBody>
+                        {this.state.lista.map((row) => (
+                            <TableRow key={row.id}>
+                                <TableCell width="75" component="th" scope="row" >{row.id}</TableCell>
+                                <TableCell width="735">{row.name}</TableCell>
+                                <TableCell width="40" align="center">{row.area}</TableCell>
+                                <TableCell width="150">{row.phone}</TableCell>
+                                <TableCell width="75" align="center"><EditIcon /></TableCell>
+                                <TableCell width="75" align="center"><EditIcon /></TableCell>
+                                <TableCell width="75" align="center"><EditIcon /></TableCell>
+                                <TableCell width="75" align="center"><DeleteIcon /></TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        )
+    }
 }

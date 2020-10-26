@@ -102,7 +102,6 @@ const SalvarDados = Event => {
         method:'post',
         headers:{
             'Content-type':'application/json',
-            //'Access-Control-Allow-Origin':'*',
         },
         body:JSON.stringify(obj)
     }).then(r=>r.json()).then(res=>{
