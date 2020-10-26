@@ -9,8 +9,8 @@ export default class ExibirInsercao extends React.Component{
     render(){
         return(
             <div>
-                <a style={{fontSize:"30px", fontWeight:"bold"}} >INSERÇÃO DE DADOS</a>
-                <p></p>
+                {/* <a style={{fontSize:"30px", fontWeight:"bold"}} >INSERÇÃO DE DADOS</a>
+                <p></p> */}
                 <Button
                     variant="contained"
                     color="black"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +9,10 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import FormGroup from '@material-ui/core/FormGroup';
+
+import MaterialTable from 'material-table';
+
+import axios from 'axios';
 
 const listaSexo = [
     {value: '-', label: '-'},
@@ -49,28 +53,68 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const SalvarDados = () => {
+const SalvarDados = Event => {
+    Event.preventDefault();
+    
+    var infoNomeAssociado = document.querySelector("[id='txtNomeAssociado']").value;
+    var infoDataNascimento = document.querySelector("[id='txtDtNascimento']").value;
+    var infoSexo = document.querySelector("[id='txtSexo']").value;
+    var infoEstadoCivil = document.querySelector("[id='txtEstadoCivil']").value;
+    var infoArea = document.querySelector("[id='txtArea']").value;
+    var infoTelefone = document.querySelector("[id='txtTelFuncionario']").value;
+    var infoTipoPresenca = document.querySelector("[id='txtTipoPresenca']").value;
+    var infoGestor = document.querySelector("[id='txtGestor']").value;
+    var infoCargo = document.querySelector("[id='txtCargo']").value;
+    var infoEmpresa = document.querySelector("[id='txtEmpresa']").value;
+    var infoLoja = document.querySelector("[id='txtLoja']").value;
+    var infoTurno = document.querySelector("[id='txtTurno']").value;
+    var infoGrupo = document.querySelector("[id='txtGrupo']").value;
+    var infoCEP = document.querySelector("[id='txtCEP']").value;
+    var infoEndereco = document.querySelector("[id='txtEndereco']").value;
+    var infoBairro = document.querySelector("[id='txtBairro']").value;
+    var infoCidade = document.querySelector("[id='txtCidade']").value;
+    var infoProntuario = document.querySelector("[id='txtProntuario']").value;
     // Acessar API de salvar dados no Banco
-    console.log("Nome do Associado: " + document.querySelector("[id='txtNomeAssociado']").value);
-    console.log("Data de Nascimento: " + document.querySelector("[id='txtDtNascimento']").value);
-    console.log("Sexo: " + document.querySelector("[id='txtSexo']").value);
-    console.log("Estado Civil: " + document.querySelector("[id='txtEstadoCivil']").value);
-    console.log("Área: " + document.querySelector("[id='txtArea']").value);
-    console.log("Telefone: " + document.querySelector("[id='txtTelFuncionario']").value);
-    console.log("Tipo Presença: " + document.querySelector("[id='txtTipoPresenca']").value);
-    console.log("Gestor: " + document.querySelector("[id='txtGestor']").value);
-    console.log("Cargo: " + document.querySelector("[id='txtCargo']").value);
-    console.log("Empresa: " + document.querySelector("[id='txtEmpresa']").value);
-    console.log("Loja: " + document.querySelector("[id='txtLoja']").value);
-    console.log("Turno: " + document.querySelector("[id='txtTurno']").value);
-    console.log("Grupo: " + document.querySelector("[id='txtGrupo']").value);
-    console.log("CEP: " + document.querySelector("[id='txtCEP']").value);
-    console.log("Endereço: " + document.querySelector("[id='txtEndereco']").value);
-    console.log("Bairro: " + document.querySelector("[id='txtBairro']").value);
-    console.log("Cidade: " + document.querySelector("[id='txtCidade']").value);
-    console.log("Prontuário: " + document.querySelector("[id='txtProntuario']").value);
-    alert("Os dados foram salvos com sucesso!");
-}
+    var obj = {
+        "address": infoEndereco,
+        "area": infoArea,
+        "birthday": infoDataNascimento,
+        "city": infoCidade,
+        "company": infoEmpresa,
+        "gender": infoSexo,
+        "idManager": infoGestor,
+        "locality": infoBairro,
+        "maritalStatus": infoEstadoCivil,
+        "name": infoNomeAssociado,
+        "occupation": infoCargo,
+        "patientRecord": infoProntuario,
+        "phone": infoTelefone,
+        "remoteWork": infoTipoPresenca,
+        "store": infoLoja,
+        "turn": infoTurno,
+        "workGroup": infoGrupo,
+        "zipCode": infoCEP
+    };
+    var myJson = JSON.stringify(obj);
+    console.log(myJson);
+
+    fetch('http://localhost:8080/associates/',{
+        method:'post',
+        headers:{
+            'Content-type':'application/json',
+            //'Access-Control-Allow-Origin':'*',
+        },
+        body:JSON.stringify(obj)
+    }).then(r=>r.json()).then(res=>{
+        if(res){
+            alert("Os dados foram salvos com sucesso!");
+        }
+    }).catch(error => {
+        console.log(JSON.stringify(obj));
+      })
+
+    // alert("Os dados foram salvos com sucesso!");
+};
 
 export default function InserirNovoFuncionario() {
     const [sexo, setSexo] = React.useState('-');
