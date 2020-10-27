@@ -1,7 +1,11 @@
 import React from 'react';
 
+import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+
+import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -11,7 +15,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 
 import axios from 'axios';
 
@@ -22,48 +25,33 @@ const PesquisarFuncionario = () => {
     
 }
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    margin: {
-      margin: theme.spacing(1),
-    },
-    withoutLabel: {
-      marginTop: theme.spacing(3),
-    },
-    textField: {
-      width: '25ch',
-    },
-    table:{
-        minwidth:1300,
-        "& .MuiTableCell-root": {
-            borderLeft: "1px solid rgba(0, 0, 0, 1)",
-            borderRight: "1px solid rgba(0, 0, 0, 1)",
-            borderBottom: "1px solid rgba(0, 0, 0, 1)",
-        },
-    },
-    tableRow: {
-        "&:last-child th, &:last-child td": {
-          borderBottom: 0
-        }
-    }
-}));
-
-function createData(id, nomeAssociado, area, telefone) {
-    return { id, nomeAssociado, area, telefone };
-}
-
-const rows = [
-    createData(1,'Felipe','11','973400876'),
-    createData(2,'Luis','11','993354686'),
-    createData(3,'Guilherme','12','997254786'),
-    createData(4,'Leonardo','13','988150807'),
-    createData(5,'Carlos','13','996335449'),
-]
-
-//const classes = useStyles();
+// const useStyles = makeStyles((theme) => ({
+//     root: {
+//       display: 'flex',
+//       flexWrap: 'wrap',
+//     },
+//     margin: {
+//       margin: theme.spacing(1),
+//     },
+//     withoutLabel: {
+//       marginTop: theme.spacing(3),
+//     },
+//     textField: {
+//       width: '25ch',
+//     },
+//     table:{
+//         "& .MuiTableCell-root": {
+//             borderLeft: "1px solid rgba(0, 0, 0, 1)",
+//             borderRight: "1px solid rgba(0, 0, 0, 1)",
+//             borderBottom: "1px solid rgba(0, 0, 0, 1)",
+//         },
+//     },
+//     tableRow: {
+//         "&:last-child th, &:last-child td": {
+//           borderBottom: 0
+//         }
+//     }
+// }));
 
 export default class PesquisarDados extends React.Component{
     state = {
@@ -80,35 +68,146 @@ export default class PesquisarDados extends React.Component{
     }
     
     render(){
-        //const classes = useStyles();
-        
         return(
-            //component={Paper} 
-            <TableContainer component={Paper} style={{marginLeft:"5px",marginRight:"10px"}}>
-                <Table>
-                    <TableHead>
-                        <TableRow style={{backgroundColor:'black'}}>
-                            <TableCell width="75" style={{color:'white', fontWeight:"bold"}} align="center">Id</TableCell>
-                            <TableCell width="735" style={{color:'white', fontWeight:"bold"}} align="center">Nome do Associado</TableCell>
-                            <TableCell width="40" style={{color:'white', fontWeight:"bold"}} align="center">Área</TableCell>
-                            <TableCell width="150" style={{color:'white', fontWeight:"bold"}} align="center">Telefone</TableCell>
-                            <TableCell width="75" style={{color:'white', fontWeight:"bold"}} align="center">Editar Associado</TableCell>
-                            <TableCell width="75" style={{color:'white', fontWeight:"bold"}} align="center">Editar Medidas</TableCell>
-                            <TableCell width="75" style={{color:'white', fontWeight:"bold"}} align="center">Editar Mapeamento</TableCell>
-                            <TableCell width="75" style={{color:'white', fontWeight:"bold"}} align="center">Excluir Associado</TableCell>
+            <TableContainer style={{marginLeft:"5px",marginRight:"5px"}}>
+                <Table style={{borderColor:'black', borderStyle:'solid'}}>
+                    <TableHead style={{fontWeight:"bold", borderBottomStyle:"solid"}}>
+                        <TableRow>
+                            <TableCell 
+                                width="50" 
+                                style={{fontWeight:"bold"}}
+                                align="center"
+                            >
+                                Id
+                            </TableCell>
+                            <TableCell 
+                                width="350" 
+                                style={{fontWeight:"bold", borderLeftStyle:"double", borderLeftColor:'black'}}
+                                align="center"
+                            >
+                                Nome do Associado
+                            </TableCell>
+                            <TableCell 
+                                width="150"
+                                style={{fontWeight:"bold", borderLeftStyle:"double", borderLeftColor:'black'}}
+                                align="center"
+                            >
+                                Associado
+                            </TableCell>
+                            <TableCell 
+                                width="225"
+                                style={{fontWeight:"bold", borderLeftStyle:"double", borderLeftColor:'black'}}
+                                align="center"
+                            >
+                                Medidas
+                            </TableCell>
+                            <TableCell 
+                                width="225"
+                                style={{fontWeight:"bold", borderLeftStyle:"double", borderLeftColor:'black'}}
+                                align="center"
+                            >
+                                Mapeamento
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {this.state.lista.map((row) => (
                             <TableRow key={row.id}>
-                                <TableCell width="75" component="th" scope="row" >{row.id}</TableCell>
-                                <TableCell width="735">{row.name}</TableCell>
-                                <TableCell width="40" align="center">{row.area}</TableCell>
-                                <TableCell width="150">{row.phone}</TableCell>
-                                <TableCell width="75" align="center"><EditIcon /></TableCell>
-                                <TableCell width="75" align="center"><EditIcon /></TableCell>
-                                <TableCell width="75" align="center"><EditIcon /></TableCell>
-                                <TableCell width="75" align="center"><DeleteIcon /></TableCell>
+                                <TableCell 
+                                    style={{
+                                        borderColor:'black', 
+                                        borderBottomStyle:'ridge',
+                                        borderRightStyle:"double", 
+                                        borderRightColor:'black'
+                                    }} 
+                                    width="50" 
+                                    component="th" 
+                                    scope="row" 
+                                >
+                                    {row.id}
+                                </TableCell>
+                                <TableCell 
+                                    width="350"
+                                    style={{
+                                        borderColor:'black', 
+                                        borderBottomStyle:'ridge',
+                                        borderRightStyle:"double", 
+                                        borderRightColor:'black'
+                                    }}
+                                >
+                                    {row.name}
+                                </TableCell>
+                                <TableCell 
+                                    width="150"
+                                    align="center"
+                                    style={{
+                                        borderColor:'black', 
+                                        borderBottomStyle:'ridge',
+                                        borderRightStyle:"double", 
+                                        borderRightColor:'black'
+                                    }}
+                                >
+                                    <Tooltip title="Editar Associado">
+                                        <Fab color="default" style={{marginRight:"30px"}}>
+                                            <EditIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                    <Tooltip title="Excluir Associado">
+                                        <Fab color="secondary">
+                                            <DeleteIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                </TableCell>
+                                <TableCell 
+                                    width="225"
+                                    align="center"
+                                    style={{
+                                        borderColor:'black', 
+                                        borderBottomStyle:'ridge',
+                                        borderRightStyle:"double", 
+                                        borderRightColor:'black'
+                                    }}
+                                >
+                                    <Tooltip title="Adicionar Medidas">
+                                        <Fab color="primary" style={{marginRight:"30px"}}>
+                                            <AddIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                    <Tooltip title="Editar Medidas">
+                                        <Fab color="default" style={{marginRight:"30px"}}>
+                                            <EditIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                    <Tooltip title="Excluir Medidas">
+                                        <Fab color="secondary">
+                                            <DeleteIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                </TableCell>
+                                <TableCell 
+                                    width="225"
+                                    align="center"
+                                    style={{
+                                        borderColor:'black', 
+                                        borderBottomStyle:'ridge'
+                                    }}
+                                >
+                                    <Tooltip title="Adicionar Mapeamento">
+                                        <Fab color="primary" style={{marginRight:"30px"}}>
+                                            <AddIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                    <Tooltip title="Editar Mapeamento">
+                                        <Fab color="default" style={{marginRight:"30px"}}>
+                                            <EditIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                    <Tooltip title="Excluir Mapeamento">
+                                        <Fab color="secondary">
+                                            <DeleteIcon />
+                                        </Fab>
+                                    </Tooltip>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

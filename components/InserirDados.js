@@ -1,9 +1,7 @@
 import React from "react"
 
 import Button from '@material-ui/core/Button';
-import NovoAssociadoIcon from '@material-ui/icons/Create';
-import NovasMedidasIcon from '@material-ui/icons/LocalHospital';
-import NovoMapeamentoIcon from '@material-ui/icons/Map';
+import NovoAssociadoIcon from '@material-ui/icons/Add';
 
 export default class ExibirInsercao extends React.Component{
     render(){
@@ -21,7 +19,7 @@ export default class ExibirInsercao extends React.Component{
                 >
                     Inserir Novo Associado
                 </Button>
-                <Button
+                {/* <Button
                     variant="contained"
                     color="black"
                     size="large"
@@ -40,7 +38,7 @@ export default class ExibirInsercao extends React.Component{
                     style={{marginRight:"20px"}}
                 >
                     Inserir Mapeamento
-                </Button>
+                </Button> */}
             </div>
         )
     }
