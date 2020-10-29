@@ -3,6 +3,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import SaveIcon from '@material-ui/icons/Save';
+import UpdateIcon from '@material-ui/icons/Update';
 import BackIcon from '@material-ui/icons/ArrowBack';
 
 import TextField from '@material-ui/core/TextField';
@@ -29,12 +30,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SalvarDados = () => {
-    console.log("Id Associado: " + document.querySelector("[id='txtIdAssociado']").value);
-    console.log("Data da Medida: " + document.querySelector("[id='txtDtMedida']").value);
-    console.log("Responsável: " + document.querySelector("[id='txtResponsavel']").value);
-    console.log("Status: " + document.querySelector("[id='txtStatus']").value);
-    console.log("Descrição das Medidas: " + document.querySelector("[id='txtDescricaoMedidas']").value);
-    console.log("Observação dos Resultados: " + document.querySelector("[id='txtObsResultados']").value);    
+    var infoIdAssociado = document.querySelector("[id='txtIdAssociado']").value;
+    var infoDataMedida = document.querySelector("[id='txtDtMedida']").value;
+    var infoResponsavel = document.querySelector("[id='txtResponsavel']").value;
+    var infoStatus = document.querySelector("[id='txtStatus']").value;
+    var infoDescrMedidas = document.querySelector("[id='txtDescricaoMedidas']").value;
+    var infoObsResultados = document.querySelector("[id='txtObsResultados']").value;
+    
+    // console.log("Id Associado: " + document.querySelector("[id='txtIdAssociado']").value);
+    // console.log("Data da Medida: " + document.querySelector("[id='txtDtMedida']").value);
+    // console.log("Responsável: " + document.querySelector("[id='txtResponsavel']").value);
+    // console.log("Status: " + document.querySelector("[id='txtStatus']").value);
+    // console.log("Descrição das Medidas: " + document.querySelector("[id='txtDescricaoMedidas']").value);
+    // console.log("Observação dos Resultados: " + document.querySelector("[id='txtObsResultados']").value);
+
+
     // Acessar API de salvar dados no Banco
     alert("Os dados foram salvos com sucesso!");
 }
@@ -52,6 +62,16 @@ export default function InserirMedidas(){
                     style={{marginRight:"20px"}}
                 >
                     Salvar
+                </Button>
+                <Button
+                    variant="contained"
+                    color="black"
+                    size="large"
+                    startIcon={<UpdateIcon />}
+                    onClick={SalvarDados}
+                    style={{marginRight:"20px"}}
+                >
+                    Atualizar
                 </Button>
                 <Button
                     variant="contained"

@@ -64,6 +64,29 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SalvarDados = () => {
+    var infoIdAssociado = document.querySelector("[id='txtIdAssociado']").value;
+    var infoContatoContaminado = document.querySelector("[id='txtContatoContaminado']").value;
+    var infoMoraQuem = document.querySelector("[id='txtMoraQuem']").value;
+    var infoUltimoDiaTrabalhado = document.querySelector("[id='txtUltimoDiaTrabalhado']").value;
+    var infoPossuiSintomas = document.querySelector("[id='txtPossuiSintomas']").value;
+    var infoSintomas = document.querySelector("[id='txtSintomas']").value;
+    var infoGrupoRisco = document.querySelector("[id='txtGrupoRisco']").value;
+    var infoPlanoSaude = document.querySelector("[id='txtPlanoSaude']").value;
+    var infoDataRegistro = document.querySelector("[id='txtDataRegistro']").value;
+    var infoContatoMedico = document.querySelector("[id='txtContatoMedico']").value;
+    var infoDataContatoMedico = document.querySelector("[id='txtDtContatoMedico']").value;
+    var infoDataExame = document.querySelector("[id='txtDtExame']").value;
+    var infoStatusExame = document.querySelector("[id='txtStatusExame']").value;
+    var infoRespCentral = document.querySelector("[id='txtRespCentral']").value;
+    var infoRespMedico = document.querySelector("[id='txtRespMedico']").value;
+    var infoRespTecinco = document.querySelector("[id='txtRespTecinco']").value;
+    var infoInternadoHoje = document.querySelector("[id='txtInternadoHoje']").value;
+    var infoHospital = document.querySelector("[id='txtHospital']").value;
+    var infoDataInicioInternacao = document.querySelector("[id='txtDtInicioInternacao']").value;
+    var infoDataFinalInternacao = document.querySelector("[id='txtDtFinalInternacao']").value;
+    var infoHistoricoInternacao = document.querySelector("[id='txtHistoricoInternacao']").value;
+    var infoDataPrevisaoRetorno = document.querySelector("[id='txtDtPrevisaoRetorno']").value;
+
     console.log("Id Associado: " + document.querySelector("[id='txtIdAssociado']").value);
     console.log("Contato Contaminado: " + document.querySelector("[id='txtContatoContaminado']").value);
     console.log("Mora Com Quem?: " + document.querySelector("[id='txtMoraQuem']").value);
@@ -91,12 +114,6 @@ const SalvarDados = () => {
 }
 
 export default function InserirMapeamento(){
-    // const [state, setState] = React.useState({
-    //     chkPossuiSintomas: false,
-    //     chkGrupoRisco: false,
-    //     chkContatoMedico: false,
-    //     chkInternadoHoje: false,
-    // });
     const [possuiSintomas, setPossuiSintomas] = React.useState('-');
     const [grupoRisco, setGrupoRisco] = React.useState('-');
     const [planoSaude, setPlanoSaude] = React.useState('-');

@@ -25,33 +25,9 @@ const PesquisarFuncionario = () => {
     
 }
 
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//       display: 'flex',
-//       flexWrap: 'wrap',
-//     },
-//     margin: {
-//       margin: theme.spacing(1),
-//     },
-//     withoutLabel: {
-//       marginTop: theme.spacing(3),
-//     },
-//     textField: {
-//       width: '25ch',
-//     },
-//     table:{
-//         "& .MuiTableCell-root": {
-//             borderLeft: "1px solid rgba(0, 0, 0, 1)",
-//             borderRight: "1px solid rgba(0, 0, 0, 1)",
-//             borderBottom: "1px solid rgba(0, 0, 0, 1)",
-//         },
-//     },
-//     tableRow: {
-//         "&:last-child th, &:last-child td": {
-//           borderBottom: 0
-//         }
-//     }
-// }));
+function ObterNomeLink(caminhoLink, valor){
+    return caminhoLink + "?id=" + valor;
+}
 
 export default class PesquisarDados extends React.Component{
     state = {
@@ -62,7 +38,6 @@ export default class PesquisarDados extends React.Component{
         axios.get('http://localhost:8080/associates/')
             .then(res => {
                 const lista = res.data;
-                //console.log(lista);
                 this.setState({lista});
             })
     }
@@ -148,7 +123,10 @@ export default class PesquisarDados extends React.Component{
                                     }}
                                 >
                                     <Tooltip title="Editar Associado">
-                                        <Fab color="default" style={{marginRight:"30px"}}>
+                                        <Fab 
+                                            color="default" style={{marginRight:"30px"}}
+                                            href={ObterNomeLink("dadosfuncionarios",row.id)}
+                                        >
                                             <EditIcon />
                                         </Fab>
                                     </Tooltip>
