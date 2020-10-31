@@ -30,8 +30,12 @@ function ObterNomeLink(caminhoLink, valor){
 }
 
 export default class PesquisarDados extends React.Component{
-    state = {
-        lista: []
+    constructor(props){
+        super(props);
+
+        this.state = {
+            lista: []
+        }
     }
     
     componentDidMount(){
@@ -39,6 +43,13 @@ export default class PesquisarDados extends React.Component{
             .then(res => {
                 const lista = res.data;
                 this.setState({lista});
+            });
+    }
+
+    handleDelete = (itemId) => {
+        axios.delete("http://localhost:8080/associates/" + itemId,
+            {params:{id:itemId}}).then(response => {
+                alert("Associado excluído com sucesso!");
             })
     }
     
@@ -131,7 +142,10 @@ export default class PesquisarDados extends React.Component{
                                         </Fab>
                                     </Tooltip>
                                     <Tooltip title="Excluir Associado">
-                                        <Fab color="secondary">
+                                        <Fab 
+                                            color="secondary"
+                                            onClick={() => this.handleDelete(row.id)}
+                                        >
                                             <DeleteIcon />
                                         </Fab>
                                     </Tooltip>

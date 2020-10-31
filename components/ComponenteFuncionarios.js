@@ -6,7 +6,11 @@ import SaveIcon from '@material-ui/icons/Save';
 import BackIcon from '@material-ui/icons/ArrowBack';
 
 import TextField from '@material-ui/core/TextField';
-// import MenuItem from '@material-ui/core/MenuItem';
+
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import FormGroup from '@material-ui/core/FormGroup';
 
@@ -71,10 +75,15 @@ var infoEndereco = "";
 var infoBairro = "";
 var infoCidade = "";
 var infoProntuario = "";
+var idAssociado = 0;
+var endereco = "";
 
 const SalvarDados = Event => {
     Event.preventDefault();
     
+    idAssociado = window.location.search.replace("?id=","");
+    console.log(idAssociado);
+
     infoNomeAssociado = document.querySelector("[id='txtNomeAssociado']").value;
     infoDataNascimento = document.querySelector("[id='txtDtNascimento']").value;
     infoSexo = document.querySelector("[id='txtSexo']").value;
@@ -111,27 +120,48 @@ const SalvarDados = Event => {
         "remoteWork": infoTipoPresenca,
         "store": infoLoja,
         "turn": infoTurno,
-        "workGroup": infoGrupo,
+        "workGoup": infoGrupo,
         "zipCode": infoCEP
     };
     var myJson = JSON.stringify(obj);
     console.log(myJson);
 
-    fetch('http://localhost:8080/associates/',{
-        method:'post',
-        headers:{
-            'Content-type':'application/json',
-        },
-        body:JSON.stringify(obj)
-    }).then(r=>r.json()).then(res=>{
-        if(res){
-            alert("Os dados foram salvos com sucesso!");
-        }
-    }).catch(error => {
-        console.log(JSON.stringify(obj));
-      })
+    if(idAssociado == 0){
+        console.log('POST');
 
-    // alert("Os dados foram salvos com sucesso!");
+        fetch('http://localhost:8080/associates/',{
+            method:'post',
+            headers:{
+                'Content-type':'application/json',
+            },
+            body:JSON.stringify(obj)
+        }).then(r=>r.json()).then(res=>{
+            if(res){
+                alert("Associado criado com sucesso!");
+            }
+        }).catch(error => {
+            console.log(JSON.stringify(obj));
+        })
+    }
+    else if(idAssociado > 0){
+        console.log('PUT');
+        
+        endereco = "http://localhost:8080/associates/" + idAssociado;
+        
+        fetch(endereco,{
+            method:'put',
+            headers:{
+                'Content-type':'application/json',
+            },
+            body:JSON.stringify(obj)
+        }).then(r=>r.json()).then(res=>{
+            if(res){
+                alert("Os dados do Associado foram atualizados com sucesso!");
+            }
+        }).catch(error => {
+            console.log(JSON.stringify(obj));
+        })
+    }
 };
 
 export default class InserirNovoFuncionario extends React.Component {
@@ -155,32 +185,55 @@ export default class InserirNovoFuncionario extends React.Component {
     // };
 
     state = {
-        listaAssociados: []
+        listaAssociado: [],
+        selected: null
+    }
+
+    handleChangeSexo(valor){
+        this.setState({selected: valor});
+        document.querySelector("[id='txtSexo']").value = valor;
     }
 
     componentDidMount(){
-        var idAssociado = window.location.search.replace("?id=","");
+        idAssociado = window.location.search.replace("?id=","");
 
         if(idAssociado > 0){
-            var endereco = "http://localhost:8080/associates/" + idAssociado;
+            endereco = "http://localhost:8080/associates/" + idAssociado;
 
             axios.get(endereco)
             .then(res => {
-                const listaAssociados = res.data;
-                this.setState({listaAssociados});
+                const listaAssociado = res.data;
+                this.setState({listaAssociado});
+
+                document.querySelector("[id='txtNomeAssociado']").value = listaAssociado.name;
+                document.querySelector("[id='txtDtNascimento']").value = listaAssociado.birthday;
+                document.querySelector("[id='txtSexo']").value = listaAssociado.gender;
+                document.querySelector("[id='txtEstadoCivil']").value = listaAssociado.maritalStatus;
+                document.querySelector("[id='txtArea']").value = listaAssociado.area;
+                document.querySelector("[id='txtTelFuncionario']").value = listaAssociado.phone;
+                document.querySelector("[id='txtTipoPresenca']").value = listaAssociado.remoteWork;
+                document.querySelector("[id='txtGestor']").value = listaAssociado.idManager;
+                document.querySelector("[id='txtCargo']").value = listaAssociado.occupation;
+                document.querySelector("[id='txtEmpresa']").value = listaAssociado.company;
+                document.querySelector("[id='txtLoja']").value = listaAssociado.store;
+                document.querySelector("[id='txtTurno']").value = listaAssociado.turn;
+                document.querySelector("[id='txtGrupo']").value = listaAssociado.workGoup;
+                document.querySelector("[id='txtCEP']").value = listaAssociado.zipCode;
+                document.querySelector("[id='txtEndereco']").value = listaAssociado.address;
+                document.querySelector("[id='txtBairro']").value = listaAssociado.locality;
+                document.querySelector("[id='txtCidade']").value = listaAssociado.city;
+                document.querySelector("[id='txtProntuario']").value = listaAssociado.patientRecord;
+
+                // console.log(listaAssociado);
+                // console.log(listaAssociado.id);
+                // console.log(listaAssociado.name);
             })
-
-
         }
-
-        
-
-        
-
-        // alert(window.location.search);
     }
 
     render(){
+        const selected = this.state;
+
         return(
             <div id="pagina_DadosFuncionarios">
                 <FormGroup row style={{marginBottom:"30px",marginLeft:"20px",marginRight:"10px"}}>
@@ -219,7 +272,7 @@ export default class InserirNovoFuncionario extends React.Component {
                     <TextField
                         id="txtDtNascimento"
                         label="Data de Nascimento"
-                        style={{ margin: 8, width:"180px", marginRight:"10px"}}
+                        style={{ margin: 8, width:"155px", marginRight:"10px"}}
                         type="date"
                         format="dd/MM/yyyy"
                         margin="normal"
@@ -229,7 +282,7 @@ export default class InserirNovoFuncionario extends React.Component {
                         variant="outlined"
                         size="small"
                     />
-                    <TextField
+                    {/* <TextField
                         id="txtSexo"
                         label="Sexo"
                         style={{ margin: 8, width:"100px", marginRight:"10px"}}
@@ -239,7 +292,28 @@ export default class InserirNovoFuncionario extends React.Component {
                         }}
                         variant="outlined"
                         size="small"
-                    />
+                    /> */}
+                    <FormControl variant="outlined">
+                        <InputLabel htmlFor="txtSexo">Sexo</InputLabel>
+                        <Select
+                            id="txtSexo"
+                            name="Sexo"
+                            //value={selected}
+                            variant="outlined"
+                            style={{ margin: 8, width:"150px", height:"40px", marginRight:"10px"}}
+                            //label="Sexo"
+                            onChange={event => this.handleChangeSexo(event.target.value)}
+                            // input={<Input id="txtSexo"/>}
+                            inputProps={{
+                                name: 'Sexo',
+                                id: 'txtSexo',
+                                value: {selected}
+                            }}
+                        >
+                            <MenuItem value="Feminino">Feminino</MenuItem>
+                            <MenuItem value="Masculino">Masculino</MenuItem>
+                        </Select>
+                    </FormControl>
                     <TextField
                         id="txtEstadoCivil"
                         label="Estado Civil"
