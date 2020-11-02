@@ -46,12 +46,19 @@ export default class PesquisarDados extends React.Component{
             });
     }
 
-    handleDelete = (itemId) => {
+    handleDeleteAssociado = (itemId) => {
         axios.delete("http://localhost:8080/associates/" + itemId,
             {params:{id:itemId}}).then(response => {
                 alert("Associado excluído com sucesso!");
             })
     }
+
+    // handleDeleteMedidas = (itemId) => {
+    //     axios.delete("http://localhost:8080/measures/" + itemId,
+    //         {params:{id:itemId}}).then(response => {
+    //             alert("Medida excluída com sucesso!");
+    //         })
+    // }
     
     render(){
         return(
@@ -135,7 +142,8 @@ export default class PesquisarDados extends React.Component{
                                 >
                                     <Tooltip title="Editar Associado">
                                         <Fab 
-                                            color="default" style={{marginRight:"30px"}}
+                                            color="default" 
+                                            style={{marginRight:"30px"}}
                                             href={ObterNomeLink("dadosfuncionarios",row.id)}
                                         >
                                             <EditIcon />
@@ -144,7 +152,7 @@ export default class PesquisarDados extends React.Component{
                                     <Tooltip title="Excluir Associado">
                                         <Fab 
                                             color="secondary"
-                                            onClick={() => this.handleDelete(row.id)}
+                                            onClick={() => this.handleDeleteAssociado(row.id)}
                                         >
                                             <DeleteIcon />
                                         </Fab>
@@ -161,7 +169,11 @@ export default class PesquisarDados extends React.Component{
                                     }}
                                 >
                                     <Tooltip title="Adicionar Medidas">
-                                        <Fab color="primary" style={{marginRight:"30px"}}>
+                                        <Fab 
+                                            color="primary" 
+                                            style={{marginRight:"30px"}}
+                                            href={ObterNomeLink("dadosmedidas",row.id)}
+                                        >
                                             <AddIcon />
                                         </Fab>
                                     </Tooltip>
@@ -171,7 +183,10 @@ export default class PesquisarDados extends React.Component{
                                         </Fab>
                                     </Tooltip>
                                     <Tooltip title="Excluir Medidas">
-                                        <Fab color="secondary">
+                                        <Fab 
+                                            color="secondary"
+                                            // onClick={() => this.handleDeleteMedidas(row.id)}
+                                        >
                                             <DeleteIcon />
                                         </Fab>
                                     </Tooltip>
