@@ -74,7 +74,7 @@ const SalvarDados = Event => {
             }
         }).catch(error => {
             console.log(JSON.stringify(obj));
-        })
+    })
 
     // Acessar API de salvar dados no Banco
     // alert("Os dados foram salvos com sucesso!");

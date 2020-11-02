@@ -200,7 +200,11 @@ export default class PesquisarDados extends React.Component{
                                     }}
                                 >
                                     <Tooltip title="Adicionar Mapeamento">
-                                        <Fab color="primary" style={{marginRight:"30px"}}>
+                                        <Fab 
+                                            color="primary" 
+                                            style={{marginRight:"30px"}}
+                                            href={ObterNomeLink("dadosmapeamento",row.id)}
+                                        >
                                             <AddIcon />
                                         </Fab>
                                     </Tooltip>
