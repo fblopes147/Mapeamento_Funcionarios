@@ -5,6 +5,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import UpdateIcon from '@material-ui/icons/Update';
 
 import TextField from '@material-ui/core/TextField';
 
@@ -28,11 +29,15 @@ import Tooltip from '@material-ui/core/Tooltip';
 import axios from 'axios';
 
 var idAssociado = 0;
+var idMedida = 0;
 var infoDataMedida = "";
 var infoResponsavel = "";
 var infoStatus = "";
 var infoDescrMedidas = "";
 var infoObsResultados = "";
+
+var btnSalvar = true;
+var btnAtualizar = false;
 
 const SalvarDados = Event => {
     Event.preventDefault();
@@ -88,6 +93,9 @@ export default class CadastroMedidas extends React.Component {
     }
     
     componentDidMount(){
+        btnSalvar = false;
+        btnAtualizar = true;
+        
         idAssociado = window.location.search.replace("?id=","");
 
         axios.get('http://localhost:8080/associates/' + idAssociado + '/measures/')
@@ -100,11 +108,17 @@ export default class CadastroMedidas extends React.Component {
     }
 
     handleEditarDados = (itemId) => {
+        btnSalvar = true;
+        btnAtualizar = false;
+        
+        idMedida = itemId;
+        
         axios.get('http://localhost:8080/measures/' + itemId)
             .then(res => {
                 const listaEditarMedidas = res.data;
                 this.setState({listaEditarMedidas});
 
+                document.querySelector("[id='txtIdMedida']").value = idMedida;
                 document.querySelector("[id='txtDtMedida']").value = listaEditarMedidas.date.substring(0,10);
                 document.querySelector("[id='txtResponsavel']").value = listaEditarMedidas.responsible;
                 document.querySelector("[id='txtStatus']").value = listaEditarMedidas.status;
@@ -118,9 +132,44 @@ export default class CadastroMedidas extends React.Component {
     handleDeleteMedidas = (itemId) => {
         axios.delete("http://localhost:8080/measures/" + itemId,
             {params:{id:itemId}}).then(response => {
-                alert("Associado excluído com sucesso!");
+                alert("Medida excluída com sucesso!");
                 document.location.reload(true);
             })
+    }
+
+    handleUpdateMedidas = () => {
+        idMedida = document.querySelector("[id='txtIdMedida']").value;
+        infoDataMedida = document.querySelector("[id='txtDtMedida']").value;
+        infoResponsavel = document.querySelector("[id='txtResponsavel']").value;
+        infoStatus = document.querySelector("[id='txtStatus']").value;
+        infoDescrMedidas = document.querySelector("[id='txtDescricaoMedidas']").value;
+        infoObsResultados = document.querySelector("[id='txtObsResultados']").value;
+
+        var obj = {
+            "date": infoDataMedida,
+            "idAssociate": idAssociado,
+            "measure": infoDescrMedidas,
+            "responsible": infoResponsavel,
+            "resultObservation": infoObsResultados,
+            "status": infoStatus
+        };
+        // var myJson = JSON.stringify(obj);
+        // console.log(myJson);
+    
+        fetch('http://localhost:8080/measures/' + idMedida + '/',{
+                method:'put',
+                headers:{
+                    'Content-type':'application/json',
+                },
+                body:JSON.stringify(obj)
+            }).then(r=>r.json()).then(res=>{
+                if(res){
+                    alert("Medida atualizada com sucesso!");
+                    document.location.reload(true);
+                }
+            }).catch(error => {
+                console.log(JSON.stringify(obj));
+        })
     }
     
     render(){
@@ -229,8 +278,20 @@ export default class CadastroMedidas extends React.Component {
                         startIcon={<SaveIcon />}
                         onClick={SalvarDados}
                         style={{marginRight:"20px"}}
+                        disabled={btnSalvar}
                     >
                         Salvar
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="black"
+                        size="large"
+                        startIcon={<UpdateIcon />}
+                        onClick={() => this.handleUpdateMedidas()}
+                        style={{marginRight:"20px"}}
+                        disabled={btnAtualizar}
+                    >
+                        Atualizar
                     </Button>
                     <Button
                         variant="contained"
@@ -244,6 +305,18 @@ export default class CadastroMedidas extends React.Component {
                 </FormGroup>
                 <FormGroup row style={{marginBottom:"20px",marginRight:"10px"}}>
                     <TextField
+                        id="txtIdMedida"
+                        label="Id Medida"
+                        style={{ margin: 8, width:"100px", marginRight:"10px"}}
+                        margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                        size="small"
+                        disabled
+                    />
+                    <TextField
                         id="txtIdAssociado"
                         label="Id Associado"
                         style={{ margin: 8, width:"100px", marginRight:"10px"}}
@@ -254,6 +327,7 @@ export default class CadastroMedidas extends React.Component {
                         variant="outlined"
                         size="small"
                         value={idAssociado}
+                        disabled
                     />
                     <TextField
                         id="txtDtMedida"

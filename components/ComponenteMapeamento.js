@@ -5,6 +5,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import BackIcon from '@material-ui/icons/ArrowBack';
+import UpdateIcon from '@material-ui/icons/Update';
 
 import TextField from '@material-ui/core/TextField';
 
@@ -33,6 +34,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import axios from 'axios';
 
 var idAssociado = 0;
+var idMapeamento = 0;
 var infoContatoContaminado = "";
 var infoMoraQuem = "";
 var infoUltimoDiaTrabalhado = "";
@@ -54,6 +56,9 @@ var infoDataInicioInternacao = "";
 var infoDataFinalInternacao = "";
 var infoHistoricoInternacao = "";
 var infoDataPrevisaoRetorno = "";
+
+var btnSalvar = true;
+var btnAtualizar = false;
 
 const SalvarDados = Event => {
     Event.preventDefault();
@@ -203,6 +208,9 @@ export default class ControleMapeamento extends React.Component {
     }
     
     componentDidMount(){
+        btnSalvar = false;
+        btnAtualizar = true;
+        
         idAssociado = window.location.search.replace("?id=","");
 
         axios.get('http://localhost:8080/associates/' + idAssociado + '/mappings/')
@@ -215,11 +223,17 @@ export default class ControleMapeamento extends React.Component {
     }
 
     handleEditarDados = (itemId) => {
+        btnSalvar = true;
+        btnAtualizar = false;
+
+        idMapeamento = itemId;
+        
         axios.get('http://localhost:8080/mappings/' + itemId)
             .then(res => {
                 const listaEditarMapeamento = res.data;
                 this.setState({listaEditarMapeamento});
 
+                document.querySelector("[id='txtIdMapeamento']").value = idMapeamento;
                 document.querySelector("[id='txtContatoContaminado']").value = listaEditarMapeamento.contactedContaminated;
                 document.querySelector("[id='txtMoraQuem']").value = listaEditarMapeamento.whoDoYouLiveWith;
                 document.querySelector("[id='txtUltimoDiaTrabalhado']").value = listaEditarMapeamento.lastDayWorked.substring(0,10);
@@ -251,12 +265,97 @@ export default class ControleMapeamento extends React.Component {
             });
     }
 
-    handleDeleteMedidas = (itemId) => {
+    handleDeleteMapeamento = (itemId) => {
         axios.delete("http://localhost:8080/mappings/" + itemId,
             {params:{id:itemId}}).then(response => {
                 alert("Mapeamento excluído com sucesso!");
                 document.location.reload(true);
             })
+    }
+
+    handleUpdateMapeamento = () => {
+        idMapeamento = document.querySelector("[id='txtIdMapeamento']").value;
+        infoContatoContaminado = document.querySelector("[id='txtContatoContaminado']").value;
+        infoMoraQuem = document.querySelector("[id='txtMoraQuem']").value;
+        infoUltimoDiaTrabalhado = document.querySelector("[id='txtUltimoDiaTrabalhado']").value;
+        infoPossuiSintomas = document.querySelector("[id='txtPossuiSintomas']").value;
+        infoSintomas = document.querySelector("[id='txtSintomas']").value;
+        infoGrupoRisco = document.querySelector("[id='txtGrupoRisco']").value;
+        infoPlanoSaude = document.querySelector("[id='txtPlanoSaude']").value;
+        infoDataRegistro = document.querySelector("[id='txtDataRegistro']").value;
+        infoContatoMedico = document.querySelector("[id='txtContatoMedico']").value;
+        if(infoContatoMedico == "Sim"){
+            infoContatoMedico = 1;
+        }
+        else{
+            infoContatoMedico = 0;
+        }
+        infoDataContatoMedico = document.querySelector("[id='txtDtContatoMedico']").value;
+        infoDataExame = document.querySelector("[id='txtDtExame']").value;
+        infoStatusExame = document.querySelector("[id='txtStatusExame']").value;
+        infoRespCentral = document.querySelector("[id='txtRespCentral']").value;
+        infoRespMedico = document.querySelector("[id='txtRespMedico']").value;
+        infoRespTecinco = document.querySelector("[id='txtRespTecinco']").value;
+        infoInternadoHoje = document.querySelector("[id='txtInternadoHoje']").value;
+        if(infoInternadoHoje == "Sim"){
+            infoInternadoHoje = 1;
+        }
+        else{
+            infoInternadoHoje = 0;
+        }
+        infoHospital = document.querySelector("[id='txtHospital']").value;
+        infoDataInicioInternacao = document.querySelector("[id='txtDtInicioInternacao']").value;
+        infoDataFinalInternacao = document.querySelector("[id='txtDtFinalInternacao']").value;
+        infoHistoricoInternacao = document.querySelector("[id='txtHistoricoInternacao']").value;
+        if(infoHistoricoInternacao == "Sim"){
+            infoHistoricoInternacao = 1;
+        }
+        else{
+            infoHistoricoInternacao = 0;
+        }
+        infoDataPrevisaoRetorno = document.querySelector("[id='txtDtPrevisaoRetorno']").value;
+
+        var obj = {
+            "admittedToday": infoInternadoHoje,
+            "associateId": idAssociado,
+            "centralResponsible": infoRespCentral,
+            "contactedContaminated": infoContatoContaminado,
+            "contactedDoctor": infoContatoMedico,
+            "dateExam": infoDataExame,
+            "dateHospitalizationEnd": infoDataFinalInternacao,
+            "dateHospitalizationStart": infoDataInicioInternacao,
+            "dateMedicalContact": infoDataContatoMedico,
+            "dateRegistration": infoDataRegistro,
+            "dateReturnForecast": infoDataPrevisaoRetorno,
+            "earlySymptoms": infoPossuiSintomas,
+            "examStatus": infoStatusExame,
+            "healthPlan": infoPlanoSaude,
+            "hospital": infoHospital,
+            "hospitalizationHistory": infoHistoricoInternacao,
+            "lastDayWorked": infoUltimoDiaTrabalhado,
+            "medicalOfficer": infoRespMedico,
+            "riskGroup": infoGrupoRisco,
+            "symptoms": infoSintomas,
+            "technicalManager": infoRespTecinco,
+            "whoDoYouLiveWith": infoMoraQuem,
+        };
+        // var myJson = JSON.stringify(obj);
+        // console.log(myJson);
+
+        fetch('http://localhost:8080/mappings/' + idMapeamento + '/',{
+                method:'put',
+                headers:{
+                    'Content-type':'application/json',
+                },
+                body:JSON.stringify(obj)
+            }).then(r=>r.json()).then(res=>{
+                if(res){
+                    alert("Mapeamento atualizado com sucesso!");
+                    document.location.reload(true);
+                }
+            }).catch(error => {
+                console.log(JSON.stringify(obj));
+        })
     }
 
     render(){
@@ -413,7 +512,7 @@ export default class ControleMapeamento extends React.Component {
                                                 <Tooltip title="Excluir Mapeamento">
                                                     <DeleteIcon 
                                                         color="secondary"
-                                                        onClick={() => this.handleDeleteMedidas(rowMapeamento.id)}
+                                                        onClick={() => this.handleDeleteMapeamento(rowMapeamento.id)}
                                                     />
                                                 </Tooltip>
                                             </TableCell>
@@ -432,8 +531,20 @@ export default class ControleMapeamento extends React.Component {
                         startIcon={<SaveIcon />}
                         onClick={SalvarDados}
                         style={{marginRight:"20px"}}
+                        disabled={btnSalvar}
                     >
                         Salvar
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="black"
+                        size="large"
+                        startIcon={<UpdateIcon />}
+                        onClick={() => this.handleUpdateMapeamento()}
+                        style={{marginRight:"20px"}}
+                        disabled={btnAtualizar}
+                    >
+                        Atualizar
                     </Button>
                     <Button
                         variant="contained"
@@ -446,6 +557,18 @@ export default class ControleMapeamento extends React.Component {
                     </Button>
                 </FormGroup>
                 <FormGroup row style={{marginBottom:"30px",marginLeft:"10px"}}>
+                    <TextField
+                        id="txtIdMapeamento"
+                        label="Id Mapeamento"
+                        style={{ margin: 8, width:"120px", marginRight:"10px"}}
+                        margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                        size="small"
+                        disabled
+                    />
                     <TextField
                         id="txtIdAssociado"
                         label="Id Associado"
