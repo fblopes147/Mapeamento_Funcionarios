@@ -2,6 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/MapeamentoFuncionarios/principal": "pages/MapeamentoFuncionarios/principal.js",
-  "/MapeamentoFuncionarios/dadosmedidas": "pages/MapeamentoFuncionarios/dadosmedidas.js"
+  "/MapeamentoFuncionarios/dadosmapeamento": "pages/MapeamentoFuncionarios/dadosmapeamento.js",
+  "/MapeamentoFuncionarios/dadosfuncionarios": "pages/MapeamentoFuncionarios/dadosfuncionarios.js"
 }

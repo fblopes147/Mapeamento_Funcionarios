@@ -7,7 +7,7 @@ export default() => {
     return(
         <div>
             <FormGroup row style={{marginBottom:"20px",marginLeft:"20px",marginRight:"10px"}}>
-                <a style={{fontSize:"30px", fontWeight:"bold"}} >CONTROLE DE MAPEAMENTO</a>
+                <a style={{fontSize:"30px", fontWeight:"bold"}} >MAPEAMENTO</a>
             </FormGroup>
             <Dados />
             <br />

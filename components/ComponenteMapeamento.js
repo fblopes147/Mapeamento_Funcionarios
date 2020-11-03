@@ -1,7 +1,8 @@
 import React from 'react';
 
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import BackIcon from '@material-ui/icons/ArrowBack';
 
@@ -14,29 +15,45 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import FormGroup from '@material-ui/core/FormGroup';
 
-const useStyles = makeStyles((theme) => ({
-    button: {
-      margin: theme.spacing(1),
-    },
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    margin: {
-        margin: theme.spacing(1),
-    },
-    withoutLabel: {
-        marginTop: theme.spacing(3),
-    },
-    textField: {
-        width: '25ch',
-    },
-}));
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
+import Tooltip from '@material-ui/core/Tooltip';
+
+import axios from 'axios';
+
+// const useStyles = makeStyles((theme) => ({
+//     button: {
+//       margin: theme.spacing(1),
+//     },
+//     root: {
+//         display: 'flex',
+//         flexWrap: 'wrap',
+//     },
+//     margin: {
+//         margin: theme.spacing(1),
+//     },
+//     withoutLabel: {
+//         marginTop: theme.spacing(3),
+//     },
+//     textField: {
+//         width: '25ch',
+//     },
+// }));
 
 var idAssociado = 0;
 var infoContatoContaminado = "";
 var infoMoraQuem = "";
-var infoRegistradoHoje = "";
 var infoUltimoDiaTrabalhado = "";
 var infoPossuiSintomas = "";
 var infoSintomas = "";
@@ -63,13 +80,6 @@ const SalvarDados = Event => {
     idAssociado = window.location.search.replace("?id=","");
     infoContatoContaminado = document.querySelector("[id='txtContatoContaminado']").value;
     infoMoraQuem = document.querySelector("[id='txtMoraQuem']").value;
-    infoRegistradoHoje = document.querySelector("[id='txtRegistradoHoje']").value;
-    if(infoRegistradoHoje == "Sim"){
-        infoRegistradoHoje = 1;
-    }
-    else{
-        infoRegistradoHoje = 0;
-    }
     infoUltimoDiaTrabalhado = document.querySelector("[id='txtUltimoDiaTrabalhado']").value;
     infoPossuiSintomas = document.querySelector("[id='txtPossuiSintomas']").value;
     infoSintomas = document.querySelector("[id='txtSintomas']").value;
@@ -90,6 +100,12 @@ const SalvarDados = Event => {
     infoRespMedico = document.querySelector("[id='txtRespMedico']").value;
     infoRespTecinco = document.querySelector("[id='txtRespTecinco']").value;
     infoInternadoHoje = document.querySelector("[id='txtInternadoHoje']").value;
+    if(infoInternadoHoje == "Sim"){
+        infoInternadoHoje = 1;
+    }
+    else{
+        infoInternadoHoje = 0;
+    }
     infoHospital = document.querySelector("[id='txtHospital']").value;
     infoDataInicioInternacao = document.querySelector("[id='txtDtInicioInternacao']").value;
     infoDataFinalInternacao = document.querySelector("[id='txtDtFinalInternacao']").value;
@@ -102,32 +118,8 @@ const SalvarDados = Event => {
     }
     infoDataPrevisaoRetorno = document.querySelector("[id='txtDtPrevisaoRetorno']").value;
 
-    // console.log("Id Associado: " + idAssociado);
-    // console.log("Contato Contaminado: " + infoContatoContaminado);
-    // console.log("Mora Com Quem?: " + infoMoraQuem);
-    // console.log("Registrado Hoje?: " + infoRegistradoHoje);
-    // console.log("Último Dia Trabalhado: " + infoUltimoDiaTrabalhado);
-    // console.log("Possui Sintomas: " + infoPossuiSintomas);
-    // console.log("Sintomas: " + infoSintomas);
-    // console.log("Grupo de Risco: " + infoGrupoRisco);
-    // console.log("Plano de Saúde: " + infoPlanoSaude);
-    // console.log("Data de Registro: " + infoDataRegistro);
-    // console.log("Contactou Médico: " + infoContatoMedico);
-    // console.log("Data de Contato Médico: " + infoDataContatoMedico);
-    // console.log("Data do Exame: " + infoDataExame);
-    // console.log("Status do Exame: " + infoStatusExame);
-    // console.log("Responsável Central: " + infoRespCentral);
-    // console.log("Responsável Médico: " + infoRespMedico);
-    // console.log("Responsável Técnico: " + infoRespTecinco);
-    // console.log("Internado Hoje: " + infoInternadoHoje);
-    // console.log("Hospital: " + infoHospital);
-    // console.log("Período de Internação - Início: " + infoDataInicioInternacao);
-    // console.log("Período de Internação - Término: " + infoDataFinalInternacao);
-    // console.log("Histórico de Internação: " + infoHistoricoInternacao);
-    // console.log("Previsão de Retorno: " + infoDataPrevisaoRetorno);
-    
     var obj = {
-        "admittedToday": infoRegistradoHoje,
+        "admittedToday": infoInternadoHoje,
         "associateId": idAssociado,
         "centralResponsible": infoRespCentral,
         "contactedContaminated": infoContatoContaminado,
@@ -167,28 +159,26 @@ const SalvarDados = Event => {
             console.log(JSON.stringify(obj));
     })
     
-    // Acessar API de salvar dados no Banco
-    // alert("Os dados foram salvos com sucesso!");
+    document.location.reload(true);
 }
 
 export default class ControleMapeamento extends React.Component {
-    state = {
-        selectedRegistradoHoje: null,
-        selectedPossuiSintomas: null,
-        selectedGrupoRisco: null,
-        selectedPlanoSaude: null,
-        selectedContactouMedico: null,
-        selectedStatusExame: null,
-        selectedInternadoHoje: null,
-        selectedHistoricoInternacao: null
-    }
+    constructor(props){
+        super(props);
 
-    handleChangeRegistradoHoje(valor){
-        this.state.selectedRegistradoHoje = valor;
-        document.querySelector("[id='txtRegistradoHoje']").value = valor;
-        document.querySelector("[id='txtRegistradoHoje']").innerText = valor;
+        this.state = {
+            listaMapeamento: [],
+            listaEditarMapeamento: [],
+            selectedPossuiSintomas: null,
+            selectedGrupoRisco: null,
+            selectedPlanoSaude: null,
+            selectedContactouMedico: null,
+            selectedStatusExame: null,
+            selectedInternadoHoje: null,
+            selectedHistoricoInternacao: null
+        }
     }
-
+    
     handleChangePossuiSintomas(valor){
         this.state.selectedPossuiSintomas = valor;
         document.querySelector("[id='txtPossuiSintomas']").value = valor;
@@ -233,10 +223,64 @@ export default class ControleMapeamento extends React.Component {
     
     componentDidMount(){
         idAssociado = window.location.search.replace("?id=","");
+
+        axios.get('http://localhost:8080/associates/' + idAssociado + '/mappings/')
+            .then(res => {
+                const listaMapeamento = res.data;
+                this.setState({listaMapeamento});
+
+                console.log(listaMapeamento);
+            });
+    }
+
+    handleEditarDados = (itemId) => {
+        axios.get('http://localhost:8080/mappings/' + itemId)
+            .then(res => {
+                const listaEditarMapeamento = res.data;
+                this.setState({listaEditarMapeamento});
+
+                document.querySelector("[id='txtContatoContaminado']").value = listaEditarMapeamento.contactedContaminated;
+                document.querySelector("[id='txtMoraQuem']").value = listaEditarMapeamento.whoDoYouLiveWith;
+                document.querySelector("[id='txtUltimoDiaTrabalhado']").value = listaEditarMapeamento.lastDayWorked.substring(0,10);
+                document.querySelector("[id='txtGrupoRisco']").value = listaEditarMapeamento.riskGroup;
+                document.querySelector("[id='txtGrupoRisco']").innerText = listaEditarMapeamento.riskGroup;
+                document.querySelector("[id='txtPossuiSintomas']").value = listaEditarMapeamento.earlySymptoms;
+                document.querySelector("[id='txtPossuiSintomas']").innerText = listaEditarMapeamento.earlySymptoms;
+                document.querySelector("[id='txtSintomas']").value = listaEditarMapeamento.symptoms;
+                document.querySelector("[id='txtPlanoSaude']").value = listaEditarMapeamento.healthPlan;
+                document.querySelector("[id='txtPlanoSaude']").innerText = listaEditarMapeamento.healthPlan;
+                document.querySelector("[id='txtDataRegistro']").value = listaEditarMapeamento.dateRegistration.substring(0,10);
+                document.querySelector("[id='txtContatoMedico']").value = listaEditarMapeamento.contactedDoctor ? "Sim" : "Não";
+                document.querySelector("[id='txtContatoMedico']").innerText = listaEditarMapeamento.contactedDoctor ? "Sim" : "Não";
+                document.querySelector("[id='txtDtContatoMedico']").value = listaEditarMapeamento.dateMedicalContact.substring(0,10);
+                document.querySelector("[id='txtDtExame']").value = listaEditarMapeamento.dateExam.substring(0,10);
+                document.querySelector("[id='txtStatusExame']").value = listaEditarMapeamento.examStatus;
+                document.querySelector("[id='txtStatusExame']").innerText = listaEditarMapeamento.examStatus;
+                document.querySelector("[id='txtRespCentral']").value = listaEditarMapeamento.centralResponsible;
+                document.querySelector("[id='txtRespMedico']").value = listaEditarMapeamento.medicalOfficer;
+                document.querySelector("[id='txtRespTecinco']").value = listaEditarMapeamento.technicalManager;
+                document.querySelector("[id='txtInternadoHoje']").value = listaEditarMapeamento.admittedToday ? "Sim" : "Não";
+                document.querySelector("[id='txtInternadoHoje']").innerText = listaEditarMapeamento.admittedToday ? "Sim" : "Não";
+                document.querySelector("[id='txtHospital']").value = listaEditarMapeamento.hospital;
+                document.querySelector("[id='txtDtInicioInternacao']").value = listaEditarMapeamento.dateHospitalizationStart.substring(0,10);
+                document.querySelector("[id='txtDtFinalInternacao']").value = listaEditarMapeamento.dateHospitalizationEnd.substring(0,10);
+                document.querySelector("[id='txtHistoricoInternacao']").value = listaEditarMapeamento.hospitalizationHistory ? "Sim" : "Não";
+                document.querySelector("[id='txtHistoricoInternacao']").innerText = listaEditarMapeamento.hospitalizationHistory ? "Sim" : "Não";
+                document.querySelector("[id='txtDtPrevisaoRetorno']").value = listaEditarMapeamento.dateReturnForecast.substring(0,10);
+                
+                //console.log(listaEditarMapeamento);
+            });
+    }
+
+    handleDeleteMedidas = (itemId) => {
+        axios.delete("http://localhost:8080/mappings/" + itemId,
+            {params:{id:itemId}}).then(response => {
+                alert("Mapeamento excluído com sucesso!");
+                document.location.reload(true);
+            })
     }
 
     render(){
-        const selectedRegistradoHoje = this.state;
         const selectedPossuiSintomas = this.state;
         const selectedGrupoRisco = this.state;
         const selectedPlanoSaude = this.state;
@@ -247,6 +291,160 @@ export default class ControleMapeamento extends React.Component {
 
         return(
             <div>
+                <Accordion style={{marginBottom:"30px",marginLeft:"10px",marginRight:"10px"}}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        id="panelControle"
+                        style={{backgroundColor:"lightgray"}}
+                    >
+                        <Typography>CONTROLE</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <TableContainer style={{marginLeft:"5px",marginRight:"5px"}}>
+                            <Table style={{borderColor:'black', borderStyle:'solid', width:900}}>
+                                <TableHead style={{fontWeight:"bold", borderBottomStyle:"solid"}}>
+                                    <TableRow>
+                                        <TableCell 
+                                            width="50" 
+                                            style={{fontWeight:"bold"}}
+                                            align="center"
+                                        >
+                                            Id
+                                        </TableCell>
+                                        <TableCell 
+                                            width="250" 
+                                            style={{fontWeight:"bold",borderLeftStyle:"double", borderLeftColor:'black'}}
+                                            align="center"
+                                        >
+                                            Contato Contaminado
+                                        </TableCell>
+                                        <TableCell 
+                                            width="150" 
+                                            style={{fontWeight:"bold",borderLeftStyle:"double", borderLeftColor:'black'}}
+                                            align="center"
+                                        >
+                                            Possui Sintomas
+                                        </TableCell>
+                                        <TableCell 
+                                            width="150" 
+                                            style={{fontWeight:"bold",borderLeftStyle:"double", borderLeftColor:'black'}}
+                                            align="center"
+                                        >
+                                            Grupo de Risco
+                                        </TableCell>
+                                        <TableCell 
+                                            width="150" 
+                                            style={{fontWeight:"bold",borderLeftStyle:"double", borderLeftColor:'black'}}
+                                            align="center"
+                                        >
+                                            Status do Exame
+                                        </TableCell>
+                                        <TableCell 
+                                            width="100" 
+                                            style={{fontWeight:"bold",borderLeftStyle:"double", borderLeftColor:'black'}}
+                                            align="center"
+                                        />
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {this.state.listaMapeamento.map((rowMapeamento) => (
+                                        <TableRow key={rowMapeamento.id}>
+                                            <TableCell 
+                                                style={{
+                                                    borderColor:'black', 
+                                                    borderBottomStyle:'ridge',
+                                                    borderRightStyle:"double", 
+                                                    borderRightColor:'black'
+                                                }} 
+                                                width="50" 
+                                                component="th" 
+                                                scope="row" 
+                                            >
+                                                {rowMapeamento.id}
+                                            </TableCell>
+                                            <TableCell 
+                                                style={{
+                                                    borderColor:'black', 
+                                                    borderBottomStyle:'ridge',
+                                                    borderRightStyle:"double", 
+                                                    borderRightColor:'black'
+                                                }} 
+                                                width="250" 
+                                                component="th" 
+                                                scope="row" 
+                                            >
+                                                {rowMapeamento.contactedContaminated}
+                                            </TableCell>
+                                            <TableCell 
+                                                style={{
+                                                    borderColor:'black', 
+                                                    borderBottomStyle:'ridge',
+                                                    borderRightStyle:"double", 
+                                                    borderRightColor:'black'
+                                                }} 
+                                                width="150" 
+                                                component="th" 
+                                                scope="row" 
+                                            >
+                                                {rowMapeamento.earlySymptoms}
+                                            </TableCell>
+                                            <TableCell 
+                                                style={{
+                                                    borderColor:'black', 
+                                                    borderBottomStyle:'ridge',
+                                                    borderRightStyle:"double", 
+                                                    borderRightColor:'black'
+                                                }} 
+                                                width="150" 
+                                                component="th" 
+                                                scope="row" 
+                                            >
+                                                {rowMapeamento.riskGroup}
+                                            </TableCell>
+                                            <TableCell 
+                                                style={{
+                                                    borderColor:'black', 
+                                                    borderBottomStyle:'ridge',
+                                                    borderRightStyle:"double", 
+                                                    borderRightColor:'black'
+                                                }} 
+                                                width="150" 
+                                                component="th" 
+                                                scope="row" 
+                                            >
+                                                {rowMapeamento.examStatus}
+                                            </TableCell>
+                                            <TableCell 
+                                                style={{
+                                                    borderColor:'black', 
+                                                    borderBottomStyle:'ridge'
+                                                }} 
+                                                width="100" 
+                                                component="th" 
+                                                scope="row"
+                                                align="center"
+                                            >
+                                                <Tooltip title="Editar Mapeamento">
+                                                    <EditIcon 
+                                                        color="default"
+                                                        style={{marginRight:"20px"}}
+                                                        onClick={() => this.handleEditarDados(rowMapeamento.id)}
+                                                    />
+                                                </Tooltip>
+                                                <Tooltip title="Excluir Mapeamento">
+                                                    <DeleteIcon 
+                                                        color="secondary"
+                                                        onClick={() => this.handleDeleteMedidas(rowMapeamento.id)}
+                                                    />
+                                                </Tooltip>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </AccordionDetails>
+                </Accordion>
                 <FormGroup row style={{marginBottom:"30px",marginLeft:"20px",marginRight:"10px"}}>
                     <Button
                         variant="contained"
@@ -303,30 +501,6 @@ export default class ControleMapeamento extends React.Component {
                         variant="outlined"
                         size="small"
                     />
-                    <FormControl variant="outlined">
-                        <InputLabel htmlFor="txtRegistradoHoje">Registrado Hoje?</InputLabel>
-                        <Select
-                            id="txtRegistradoHoje"
-                            name="Registrado Hoje?"
-                            value={this.state.selectedRegistradoHoje}
-                            variant="outlined"
-                            style={{ margin: 8, width:"120px", height:"40px", marginRight:"10px"}}
-                            onChange={event => this.handleChangeRegistradoHoje(event.target.value)}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            inputProps={{
-                                name: 'Registrado Hoje?',
-                                id: 'txtRegistradoHoje',
-                                value: {selectedRegistradoHoje},
-                                shrink: true
-                            }}
-                        >
-                            <MenuItem value="">Selecionar</MenuItem>
-                            <MenuItem value="Sim">Sim</MenuItem>
-                            <MenuItem value="Não">Não</MenuItem>
-                        </Select>
-                    </FormControl>
                     <TextField
                         id="txtUltimoDiaTrabalhado"
                         label="Último Dia Trabalhado"
@@ -344,7 +518,7 @@ export default class ControleMapeamento extends React.Component {
                         <InputLabel htmlFor="txtGrupoRisco">Grupo de Risco?</InputLabel>
                         <Select
                             id="txtGrupoRisco"
-                            name="Grupo de Risco?"
+                            // name="Grupo de Risco?"
                             value={this.state.selectedGrupoRisco}
                             variant="outlined"
                             style={{ margin: 8, width:"120px", height:"40px", marginRight:"10px"}}
@@ -353,7 +527,7 @@ export default class ControleMapeamento extends React.Component {
                                 shrink: true,
                             }}
                             inputProps={{
-                                name: 'Grupo de Risco?',
+                                // name: 'Grupo de Risco?',
                                 id: 'txtGrupoRisco',
                                 value: {selectedGrupoRisco},
                                 shrink: true
@@ -393,8 +567,6 @@ export default class ControleMapeamento extends React.Component {
                     <TextField
                         id="txtSintomas"
                         label="Sintomas"
-                        multiline
-                        rows={2}
                         style={{ margin: 8, width:"300px", marginRight:"10px"}}
                         margin="normal"
                         InputLabelProps={{
@@ -454,19 +626,19 @@ export default class ControleMapeamento extends React.Component {
                         size="small"
                     />
                     <FormControl variant="outlined">
-                        <InputLabel htmlFor="txtContatoMedico">Contactou Médico?</InputLabel>
+                        <InputLabel htmlFor="txtContatoMedico">Contato Médico?</InputLabel>
                         <Select
                             id="txtContatoMedico"
-                            name="Contactou Médico?"
+                            name="Contato Médico?"
                             value={this.state.selectedContactouMedico}
                             variant="outlined"
-                            style={{ margin: 8, width:"140px", height:"40px", marginRight:"10px"}}
+                            style={{ margin: 8, width:"120px", height:"40px", marginRight:"10px"}}
                             onChange={event => this.handleChangeContactouMedico(event.target.value)}
                             InputLabelProps={{
                                 shrink: true,
                             }}
                             inputProps={{
-                                name: 'Contactou Médico?',
+                                name: 'Contato Médico?',
                                 id: 'txtContatoMedico',
                                 value: {selectedContactouMedico},
                                 shrink: true
