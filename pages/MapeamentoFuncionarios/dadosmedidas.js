@@ -7,7 +7,7 @@ export default() => {
     return(
         <div>
             <FormGroup row style={{marginBottom:"20px",marginLeft:"10px",marginRight:"10px"}}>
-                <a style={{fontSize:"30px", fontWeight:"bold"}} >CONTROLE DE MEDIDAS</a>
+                <a style={{fontSize:"30px", fontWeight:"bold"}} >MEDIDAS</a>
             </FormGroup>
             <Dados />
             <br />

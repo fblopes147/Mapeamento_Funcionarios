@@ -7,8 +7,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { makeStyles } from '@material-ui/core/styles';
-
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -28,6 +26,8 @@ const PesquisarFuncionario = () => {
 function ObterNomeLink(caminhoLink, valor){
     return caminhoLink + "?id=" + valor;
 }
+
+var open = false;
 
 export default class PesquisarDados extends React.Component{
     constructor(props){
@@ -53,14 +53,9 @@ export default class PesquisarDados extends React.Component{
             })
     }
 
-    // handleDeleteMedidas = (itemId) => {
-    //     axios.delete("http://localhost:8080/measures/" + itemId,
-    //         {params:{id:itemId}}).then(response => {
-    //             alert("Medida excluída com sucesso!");
-    //         })
-    // }
-    
     render(){
+        //const [open, setOpen] = React.useState(false);
+
         return(
             <TableContainer style={{marginLeft:"5px",marginRight:"5px"}}>
                 <Table style={{borderColor:'black', borderStyle:'solid'}}>
