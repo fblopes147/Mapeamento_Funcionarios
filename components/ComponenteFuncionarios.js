@@ -162,10 +162,13 @@ export default class InserirNovoFuncionario extends React.Component {
                 document.querySelector("[id='txtNomeAssociado']").value = listaAssociado.name;
                 document.querySelector("[id='txtDtNascimento']").value = listaAssociado.birthday;
                 document.querySelector("[id='txtSexo']").value = listaAssociado.gender;
+                document.querySelector("[id='txtSexo']").innerText = listaAssociado.gender;
                 document.querySelector("[id='txtEstadoCivil']").value = listaAssociado.maritalStatus;
+                document.querySelector("[id='txtEstadoCivil']").innerText = listaAssociado.maritalStatus;
                 document.querySelector("[id='txtArea']").value = listaAssociado.area;
                 document.querySelector("[id='txtTelFuncionario']").value = listaAssociado.phone;
                 document.querySelector("[id='txtTipoPresenca']").value = listaAssociado.remoteWork;
+                document.querySelector("[id='txtTipoPresenca']").innerText = listaAssociado.remoteWork;
                 document.querySelector("[id='txtGestor']").value = listaAssociado.idManager;
                 document.querySelector("[id='txtCargo']").value = listaAssociado.occupation;
                 document.querySelector("[id='txtEmpresa']").value = listaAssociado.company;

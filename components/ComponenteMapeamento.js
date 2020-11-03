@@ -32,25 +32,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import axios from 'axios';
 
-// const useStyles = makeStyles((theme) => ({
-//     button: {
-//       margin: theme.spacing(1),
-//     },
-//     root: {
-//         display: 'flex',
-//         flexWrap: 'wrap',
-//     },
-//     margin: {
-//         margin: theme.spacing(1),
-//     },
-//     withoutLabel: {
-//         marginTop: theme.spacing(3),
-//     },
-//     textField: {
-//         width: '25ch',
-//     },
-// }));
-
 var idAssociado = 0;
 var infoContatoContaminado = "";
 var infoMoraQuem = "";
@@ -267,8 +248,6 @@ export default class ControleMapeamento extends React.Component {
                 document.querySelector("[id='txtHistoricoInternacao']").value = listaEditarMapeamento.hospitalizationHistory ? "Sim" : "Não";
                 document.querySelector("[id='txtHistoricoInternacao']").innerText = listaEditarMapeamento.hospitalizationHistory ? "Sim" : "Não";
                 document.querySelector("[id='txtDtPrevisaoRetorno']").value = listaEditarMapeamento.dateReturnForecast.substring(0,10);
-                
-                //console.log(listaEditarMapeamento);
             });
     }
 
@@ -518,7 +497,6 @@ export default class ControleMapeamento extends React.Component {
                         <InputLabel htmlFor="txtGrupoRisco">Grupo de Risco?</InputLabel>
                         <Select
                             id="txtGrupoRisco"
-                            // name="Grupo de Risco?"
                             value={this.state.selectedGrupoRisco}
                             variant="outlined"
                             style={{ margin: 8, width:"120px", height:"40px", marginRight:"10px"}}
@@ -527,7 +505,6 @@ export default class ControleMapeamento extends React.Component {
                                 shrink: true,
                             }}
                             inputProps={{
-                                // name: 'Grupo de Risco?',
                                 id: 'txtGrupoRisco',
                                 value: {selectedGrupoRisco},
                                 shrink: true

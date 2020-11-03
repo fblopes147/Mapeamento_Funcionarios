@@ -19,10 +19,10 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/MapeamentoFuncionarios/dadosfuncionarios.js"
     ],
-    "/MapeamentoFuncionarios/dadosmapeamento": [
+    "/MapeamentoFuncionarios/principal": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/MapeamentoFuncionarios/dadosmapeamento.js"
+      "static/chunks/pages/MapeamentoFuncionarios/principal.js"
     ],
     "/_app": [
       "static/chunks/main.js",

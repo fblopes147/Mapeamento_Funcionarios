@@ -1,8 +1,10 @@
 import React from 'react';
 
-import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MedidasIcon from '@material-ui/icons/Assignment';
+import MapeamentoIcon from '@material-ui/icons/LocalHospital';
+import LimparPesquisaIcon from '@material-ui/icons/LocalLaundryService';
 
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -14,27 +16,25 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-import axios from 'axios';
+import TextField from '@material-ui/core/TextField';
+import FormGroup from '@material-ui/core/FormGroup';
+import Button from '@material-ui/core/Button';
+import SearchIcon from '@material-ui/icons/Search';
 
-const PesquisarFuncionario = () => {
-    if(document.querySelector("[name='txtNomeFuncionario']").value == ""){
-        alert("Nome deve ser preenchido");
-    }
-    
-}
+import axios from 'axios';
 
 function ObterNomeLink(caminhoLink, valor){
     return caminhoLink + "?id=" + valor;
 }
-
-var open = false;
 
 export default class PesquisarDados extends React.Component{
     constructor(props){
         super(props);
 
         this.state = {
-            lista: []
+            lista: [],
+            listaMedidas: [],
+            listaMapeamento: []
         }
     }
     
@@ -47,178 +47,253 @@ export default class PesquisarDados extends React.Component{
     }
 
     handleDeleteAssociado = (itemId) => {
-        axios.delete("http://localhost:8080/associates/" + itemId,
-            {params:{id:itemId}}).then(response => {
-                alert("Associado excluído com sucesso!");
-            })
+        if(confirm("Você deseja excluir este associado?")){
+            axios.get('http://localhost:8080/associates/' + itemId + '/measures/')
+                .then(res => {
+                    const listaMedidas = res.data;
+                    this.setState({listaMedidas});
+
+                    listaMedidas.map(function (itemMedida) {
+                        axios.delete("http://localhost:8080/measures/" + itemId,
+                            {params:{id:itemMedida.id}}).then(response => {
+                        })
+                    });
+                });
+
+            axios.get('http://localhost:8080/associates/' + itemId + '/mappings/')
+                .then(res => {
+                    const listaMapeamento = res.data;
+                    this.setState({listaMapeamento});
+
+                    listaMapeamento.map(function (itemMapeamento) {
+                        axios.delete("http://localhost:8080/mappings/" + itemId,
+                            {params:{id:itemMapeamento.id}}).then(response => {
+                    })
+                });
+            });
+
+            axios.delete("http://localhost:8080/associates/" + itemId,
+                {params:{id:itemId}}).then(response => {
+                    alert("Associado excluído com sucesso!");
+                    document.location.reload(true);
+                })
+        }
+    }
+
+    handlePesquisarAssociado = () => {
+        var nomeAssociado = document.querySelector("[id='txtNomeAssociado']").value;
+        if(nomeAssociado == ""){
+            alert("Nome deve ser preenchido");
+        }
+        else{
+            axios.get('http://localhost:8080/associates/name/' + nomeAssociado + '/')
+                .then(res => {
+                    const lista = res.data;
+                    this.setState({lista});
+                });
+        }
+    }
+
+    handleLimparPesquisa = () => {
+        document.querySelector("[id='txtNomeAssociado']").value = "";
+        document.querySelector("[id='txtNomeAssociado']").innerText = "";
+        axios.get('http://localhost:8080/associates/')
+            .then(res => {
+                const lista = res.data;
+                this.setState({lista});
+            });
     }
 
     render(){
-        //const [open, setOpen] = React.useState(false);
-
         return(
-            <TableContainer style={{marginLeft:"5px",marginRight:"5px"}}>
-                <Table style={{borderColor:'black', borderStyle:'solid'}}>
-                    <TableHead style={{fontWeight:"bold", borderBottomStyle:"solid"}}>
-                        <TableRow>
-                            <TableCell 
-                                width="50" 
-                                style={{fontWeight:"bold"}}
-                                align="center"
-                            >
-                                Id
-                            </TableCell>
-                            <TableCell 
-                                width="350" 
-                                style={{fontWeight:"bold", borderLeftStyle:"double", borderLeftColor:'black'}}
-                                align="center"
-                            >
-                                Nome do Associado
-                            </TableCell>
-                            <TableCell 
-                                width="150"
-                                style={{fontWeight:"bold", borderLeftStyle:"double", borderLeftColor:'black'}}
-                                align="center"
-                            >
-                                Associado
-                            </TableCell>
-                            <TableCell 
-                                width="225"
-                                style={{fontWeight:"bold", borderLeftStyle:"double", borderLeftColor:'black'}}
-                                align="center"
-                            >
-                                Medidas
-                            </TableCell>
-                            <TableCell 
-                                width="225"
-                                style={{fontWeight:"bold", borderLeftStyle:"double", borderLeftColor:'black'}}
-                                align="center"
-                            >
-                                Mapeamento
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.state.lista.map((row) => (
-                            <TableRow key={row.id}>
+            <div>
+                <FormGroup row style={{marginBottom:"20px",marginRight:"10px"}}>
+                    <TextField
+                        id="txtNomeAssociado"
+                        label="Nome do Associado"
+                        style={{ margin: 8, width:"300px", marginRight:"20px"}}
+                        margin="normal"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                        size="small"
+                    />
+                    <Button
+                        variant="contained"
+                        color="black"
+                        size="large"
+                        startIcon={<SearchIcon />}
+                        onClick={() => this.handlePesquisarAssociado()}
+                        style={{marginTop:"6px", height:42, marginRight:"20px"}}
+                    >
+                        Pesquisar
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="black"
+                        size="large"
+                        startIcon={<LimparPesquisaIcon />}
+                        onClick={() => this.handleLimparPesquisa()}
+                        style={{marginTop:"6px", height:42}}
+                    >
+                        Limpar Pesquisa
+                    </Button>
+                </FormGroup>
+                <TableContainer style={{marginLeft:"5px",marginRight:"5px"}}>
+                    <Table style={{borderColor:'black', borderStyle:'solid', width:750}}>
+                        <TableHead style={{fontWeight:"bold", borderBottomStyle:"solid"}}>
+                            <TableRow>
                                 <TableCell 
-                                    style={{
-                                        borderColor:'black', 
-                                        borderBottomStyle:'ridge',
-                                        borderRightStyle:"double", 
-                                        borderRightColor:'black'
-                                    }} 
-                                    width="50" 
-                                    component="th" 
-                                    scope="row" 
-                                >
-                                    {row.id}
-                                </TableCell>
-                                <TableCell 
-                                    width="350"
-                                    style={{
-                                        borderColor:'black', 
-                                        borderBottomStyle:'ridge',
-                                        borderRightStyle:"double", 
-                                        borderRightColor:'black'
-                                    }}
-                                >
-                                    {row.name}
-                                </TableCell>
-                                <TableCell 
-                                    width="150"
+                                    style={{fontWeight:"bold", width:50}}
                                     align="center"
-                                    style={{
-                                        borderColor:'black', 
-                                        borderBottomStyle:'ridge',
-                                        borderRightStyle:"double", 
-                                        borderRightColor:'black'
-                                    }}
                                 >
-                                    <Tooltip title="Editar Associado">
-                                        <Fab 
-                                            color="default" 
-                                            style={{marginRight:"30px"}}
-                                            href={ObterNomeLink("dadosfuncionarios",row.id)}
-                                        >
-                                            <EditIcon />
-                                        </Fab>
-                                    </Tooltip>
-                                    <Tooltip title="Excluir Associado">
-                                        <Fab 
-                                            color="secondary"
-                                            onClick={() => this.handleDeleteAssociado(row.id)}
-                                        >
-                                            <DeleteIcon />
-                                        </Fab>
-                                    </Tooltip>
+                                    Id
                                 </TableCell>
                                 <TableCell 
-                                    width="225"
-                                    align="center"
                                     style={{
-                                        borderColor:'black', 
-                                        borderBottomStyle:'ridge',
-                                        borderRightStyle:"double", 
-                                        borderRightColor:'black'
+                                        fontWeight:"bold", 
+                                        borderLeftStyle:"double", 
+                                        borderLeftColor:'black',
+                                        width:350
                                     }}
+                                    align="center"
                                 >
-                                    <Tooltip title="Adicionar Medidas">
-                                        <Fab 
-                                            color="primary" 
-                                            style={{marginRight:"30px"}}
-                                            href={ObterNomeLink("dadosmedidas",row.id)}
-                                        >
-                                            <AddIcon />
-                                        </Fab>
-                                    </Tooltip>
-                                    <Tooltip title="Editar Medidas">
-                                        <Fab color="default" style={{marginRight:"30px"}}>
-                                            <EditIcon />
-                                        </Fab>
-                                    </Tooltip>
-                                    <Tooltip title="Excluir Medidas">
-                                        <Fab 
-                                            color="secondary"
-                                            // onClick={() => this.handleDeleteMedidas(row.id)}
-                                        >
-                                            <DeleteIcon />
-                                        </Fab>
-                                    </Tooltip>
+                                    Nome do Associado
                                 </TableCell>
                                 <TableCell 
-                                    width="225"
-                                    align="center"
                                     style={{
-                                        borderColor:'black', 
-                                        borderBottomStyle:'ridge'
+                                        fontWeight:"bold", 
+                                        borderLeftStyle:"double", 
+                                        borderLeftColor:'black',
+                                        width:250
                                     }}
+                                    align="center"
                                 >
-                                    <Tooltip title="Adicionar Mapeamento">
-                                        <Fab 
-                                            color="primary" 
-                                            style={{marginRight:"30px"}}
-                                            href={ObterNomeLink("dadosmapeamento",row.id)}
-                                        >
-                                            <AddIcon />
-                                        </Fab>
-                                    </Tooltip>
-                                    <Tooltip title="Editar Mapeamento">
-                                        <Fab color="default" style={{marginRight:"30px"}}>
-                                            <EditIcon />
-                                        </Fab>
-                                    </Tooltip>
-                                    <Tooltip title="Excluir Mapeamento">
-                                        <Fab color="secondary">
-                                            <DeleteIcon />
-                                        </Fab>
-                                    </Tooltip>
+                                    Associado
+                                </TableCell>
+                                <TableCell 
+                                    style={{
+                                        fontWeight:"bold", 
+                                        borderLeftStyle:"double", 
+                                        borderLeftColor:'black',
+                                        width:50
+                                    }}
+                                    align="center"
+                                >
+                                    Medidas
+                                </TableCell>
+                                <TableCell 
+                                    style={{
+                                        fontWeight:"bold", 
+                                        borderLeftStyle:"double", 
+                                        borderLeftColor:'black',
+                                        width:50
+                                    }}
+                                    align="center"
+                                >
+                                    Mapeamento
                                 </TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {this.state.lista.map((row) => (
+                                <TableRow key={row.id}>
+                                    <TableCell 
+                                        style={{
+                                            borderColor:'black', 
+                                            borderBottomStyle:'ridge',
+                                            borderRightStyle:"double", 
+                                            borderRightColor:'black',
+                                            width:50
+                                        }} 
+                                        component="th" 
+                                        scope="row" 
+                                    >
+                                        {row.id}
+                                    </TableCell>
+                                    <TableCell 
+                                        style={{
+                                            borderColor:'black', 
+                                            borderBottomStyle:'ridge',
+                                            borderRightStyle:"double", 
+                                            borderRightColor:'black',
+                                            width:350
+                                        }}
+                                    >
+                                        {row.name}
+                                    </TableCell>
+                                    <TableCell 
+                                        align="center"
+                                        style={{
+                                            borderColor:'black', 
+                                            borderBottomStyle:'ridge',
+                                            borderRightStyle:"double", 
+                                            borderRightColor:'black',
+                                            width:250
+                                        }}
+                                    >
+                                        <Tooltip title="Editar Associado">
+                                            <Fab 
+                                                color="default" 
+                                                style={{marginRight:"30px"}}
+                                                href={ObterNomeLink("dadosfuncionarios",row.id)}
+                                            >
+                                                <EditIcon />
+                                            </Fab>
+                                        </Tooltip>
+                                        <Tooltip title="Excluir Associado">
+                                            <Fab 
+                                                color="secondary"
+                                                onClick={() => this.handleDeleteAssociado(row.id)}
+                                            >
+                                                <DeleteIcon />
+                                            </Fab>
+                                        </Tooltip>
+                                    </TableCell>
+                                    <TableCell 
+                                        style={{
+                                            borderColor:'black', 
+                                            borderBottomStyle:'ridge',
+                                            borderRightStyle:"double", 
+                                            borderRightColor:'black',
+                                            width:50
+                                        }}
+                                    >
+                                        <Tooltip title="Controle de Medidas">
+                                            <Fab 
+                                                color="primary" 
+                                                style={{marginRight:"30px"}}
+                                                href={ObterNomeLink("dadosmedidas",row.id)}
+                                            >
+                                                <MedidasIcon />
+                                            </Fab>
+                                        </Tooltip>
+                                    </TableCell>
+                                    <TableCell 
+                                        align="center"
+                                        style={{
+                                            borderColor:'black', 
+                                            borderBottomStyle:'ridge',
+                                            width:50
+                                        }}
+                                    >
+                                        <Tooltip title="Controle de Mapeamento">
+                                            <Fab 
+                                                color="primary" 
+                                                style={{marginRight:"30px"}}
+                                                href={ObterNomeLink("dadosmapeamento",row.id)}
+                                            >
+                                                <MapeamentoIcon />
+                                            </Fab>
+                                        </Tooltip>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
         )
     }
 }
